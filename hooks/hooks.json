@@ -1,0 +1,78 @@
+{
+  "version": "2.0.0",
+  "description": "PostToolUse hooks for skill coordination service",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "name": "coordination_logging",
+            "description": "Log output to TaskPilot directory (Phase 1)",
+            "command": "filepath=\"$CLAUDE_TOOL_INPUT_FILE_PATH\"; if [ -n \"$filepath\" ]; then case \"$filepath\" in */.pm/*|*/.pe/*|*/.sde/*|*/.qae/*|*/.ux/*|*/.project/*) echo \"TaskPilot: Output saved to $filepath\" ;; *) : ;; esac; fi"
+          },
+          {
+            "type": "event_emission",
+            "name": "skill_completion_event",
+            "description": "Emit structured skill completion event (Phase 4)",
+            "enabled": true,
+            "event_schema": {
+              "event_type": "SKILL_COMPLETE",
+              "skill": "$SKILL_NAME",
+              "phase": "$PHASE_NUMBER",
+              "status": "$EXECUTION_STATUS",
+              "outputs": [
+                "$CLAUDE_TOOL_INPUT_FILE_PATH"
+              ],
+              "timestamp": "$ISO_TIMESTAMP"
+            },
+            "event_sink": ".project/events.jsonl",
+            "trigger_conditions": [
+              {
+                "output_dir": ".pm/*",
+                "domain": "pm"
+              },
+              {
+                "output_dir": ".pe/*",
+                "domain": "pe"
+              },
+              {
+                "output_dir": ".sde/*",
+                "domain": "sde"
+              },
+              {
+                "output_dir": ".qae/*",
+                "domain": "qae"
+              },
+              {
+                "output_dir": ".ux/*",
+                "domain": "ux"
+              },
+              {
+                "output_dir": ".project/*",
+                "domain": "master"
+              }
+            ]
+          },
+          {
+            "type": "loop_tracking",
+            "name": "loop_counter",
+            "description": "Track loops in .project/loops.md (Phase 3)",
+            "enabled": true,
+            "tracking_file": ".project/loops.md",
+            "on_loop_detection": "increment counter, check < max_loops_per_phase"
+          },
+          {
+            "type": "routing_decision",
+            "name": "apply_routing_rules",
+            "description": "Apply quality gate routing (Phase 2)",
+            "enabled": true,
+            "rules_file": "orchestration/routing-rules.json",
+            "decision_logic": "IF quality_gate_failed THEN apply next_skills_if_fail ELSE apply next_skills_if_pass"
+          }
+        ]
+      }
+    ]
+  }
+}

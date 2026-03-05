@@ -1,0 +1,9 @@
+{
+  "name": "taskpilot",
+  "description": "56 actionable skills + 5 domain agents + 1 master orchestrator across PM, PE, SDE, QAE, and UX",
+  "version": "3.1.0",
+  "author": {
+    "name": "TaskPilot"
+  },
+  "license": "MIT"
+}
