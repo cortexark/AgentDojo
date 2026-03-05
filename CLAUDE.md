@@ -1,7 +1,72 @@
-# TaskPilot — PM, PE, SDE, QAE & UX Skills
+# AgentDojo — PM, PE, SDE, QAE & UX Skills
 
 ## Overview
-TaskPilot is a modular skill system for Claude Code, covering **Product Management**, **Principal Engineering**, **Senior SDE**, **Quality Assurance Engineering**, and **UI/UX Design** domains. 56 skills across 5 domains — each is a standalone agent that can be pointed at any product repository or engineering organization.
+AgentDojo is a modular skill system for Claude Code, covering **Product Management**, **Principal Engineering**, **Senior SDE**, **Quality Assurance Engineering**, and **UI/UX Design** domains. 56 skills across 5 domains — each is a standalone agent that can be pointed at any product repository or engineering organization.
+
+## Setup — Add to Claude Code
+
+### Option 1: Clone and Install (Recommended)
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/mission-agi/AgentDojo.git
+
+# 2. Copy skills to your Claude config
+cp -r AgentDojo/claude/commands/ ~/.claude/commands/
+
+# 3. Copy the orchestrator skill
+mkdir -p ~/.claude/skills/orchestrator
+cp AgentDojo/orchestrator/SKILL.md ~/.claude/skills/orchestrator/SKILL.md
+
+# 4. Copy domain agents
+mkdir -p ~/.claude/skills/agents
+cp AgentDojo/agents/*.md ~/.claude/skills/agents/
+```
+
+### Option 2: Install as Claude Plugin
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/mission-agi/AgentDojo.git
+
+# 2. Copy plugin to Claude's plugin cache
+mkdir -p ~/.claude/plugins/cache/local/agentdojo/1.0.0
+cp -r AgentDojo/* ~/.claude/plugins/cache/local/agentdojo/1.0.0/
+```
+
+### Option 3: Use Directly in Any Project
+
+```bash
+# 1. Clone into your project
+git clone https://github.com/mission-agi/AgentDojo.git .agentdojo
+
+# 2. Copy the slash commands you need
+cp -r .agentdojo/claude/commands/ .claude/commands/
+
+# 3. Start using skills
+claude
+# Then type: /sde-tdd my-feature
+```
+
+### Verify Installation
+
+After setup, open Claude Code and type any skill command:
+
+```
+/sde-tdd           # Start TDD workflow
+/gap-analyst       # Run product gap analysis
+/ux-design-system  # Build a design system
+/qae-security      # Run security scan
+/pe-tech-strategy  # Write tech strategy
+/orchestrator      # Run the full 9-phase SDLC orchestrator
+```
+
+If the skill loads, you're good to go.
+
+### Requirements
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI)
+- A project repository to work in
 
 ## Skills (invoke with `/skill-name`)
 
