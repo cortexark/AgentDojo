@@ -229,6 +229,8 @@ cp -r .agentdojo/claude/commands/ .claude/commands/
 ## Project Structure
 
 ```
+CLAUDE.md            — Project instructions for Claude Code (loaded automatically)
+README.md            — This file (for humans on GitHub)
 agents/              — Domain agent definitions (pm, pe, sde, qae, ux, orchestrator)
 claude/commands/     — 60 slash commands (one per skill + orchestrators)
 orchestrator/        — Master orchestrator engine (SKILL.md, routing, coordination)
@@ -238,6 +240,15 @@ sde/                 — Senior SDE skills
 qae/                 — Quality Assurance skills
 ux/                  — UI/UX Design skills
 ```
+
+### About CLAUDE.md
+
+`CLAUDE.md` is a special file that Claude Code reads automatically when working in a project. It contains the skill conventions, data directory rules, domain integration maps, and accountability standards that Claude needs to use the skills correctly.
+
+- **README.md** = for you, reading on GitHub
+- **CLAUDE.md** = for Claude Code, loaded as project context
+
+Both are needed. Don't delete CLAUDE.md — without it, Claude won't know how to use the skills properly.
 
 ---
 
