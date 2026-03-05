@@ -229,26 +229,66 @@ cp -r .agentdojo/claude/commands/ .claude/commands/
 ## Project Structure
 
 ```
-CLAUDE.md            — Project instructions for Claude Code (loaded automatically)
-README.md            — This file (for humans on GitHub)
-agents/              — Domain agent definitions (pm, pe, sde, qae, ux, orchestrator)
-claude/commands/     — 60 slash commands (one per skill + orchestrators)
-orchestrator/        — Master orchestrator engine (SKILL.md, routing, coordination)
-pm/                  — Product Management skills + example outputs
-pe/                  — Principal Engineering skills
-sde/                 — Senior SDE skills
-qae/                 — Quality Assurance skills
-ux/                  — UI/UX Design skills
+AgentDojo/
+├── CLAUDE.md              # Claude Code project instructions (auto-loaded)
+├── README.md              # This file
+├── LICENSE                # All Rights Reserved
+│
+├── claude/commands/       # Slash commands (the skills you type)
+│   ├── sde-tdd.md         #   /sde-tdd
+│   ├── gap-analyst.md     #   /gap-analyst
+│   ├── ux-design-system.md#   /ux-design-system
+│   └── ... (60 files)     #   one file per skill + orchestrator
+│
+├── agents/                # Domain agent definitions
+│   ├── pm.md              #   PM agent — routes to 11 PM skills
+│   ├── pe.md              #   PE agent — routes to 11 PE skills
+│   ├── sde.md             #   SDE agent — routes to 11 SDE skills
+│   ├── qae.md             #   QAE agent — routes to 11 QAE skills
+│   ├── ux.md              #   UX agent — routes to 11 UX skills
+│   └── orchestrator.md    #   Master orchestrator agent
+│
+├── orchestrator/          # Master orchestrator engine
+│   ├── SKILL.md           #   9-phase SDLC logic, gates, skill selection
+│   ├── routing-rules.json #   Phase transitions, loop exit criteria
+│   └── coordination-service.md  # Cross-domain handoff protocols
+│
+├── pm/                    # Product Management skill definitions
+├── pe/                    # Principal Engineering skill definitions
+├── sde/                   # Senior SDE skill definitions
+├── qae/                   # Quality Assurance skill definitions
+└── ux/                    # UI/UX Design skill definitions
 ```
 
-### About CLAUDE.md
+### What Each Part Does
 
-`CLAUDE.md` is a special file that Claude Code reads automatically when working in a project. It contains the skill conventions, data directory rules, domain integration maps, and accountability standards that Claude needs to use the skills correctly.
+| Folder/File | What It Is | When You Need It | How To Use It |
+|-------------|-----------|-------------------|---------------|
+| `claude/commands/` | The slash commands themselves | **Always** — this is the core | Copy to `~/.claude/commands/` and type `/sde-tdd` in Claude Code |
+| `CLAUDE.md` | Project context Claude reads automatically | **Always** — tells Claude the conventions | Lives in project root, Claude loads it on startup |
+| `agents/` | Agent definitions for multi-skill orchestration | When using orchestrators (`/pm-orchestrator`, `/orchestrator`) | Copy to `~/.claude/skills/agents/` |
+| `orchestrator/` | Master orchestrator engine | When running the full 9-phase SDLC (`/orchestrator`) | Copy to `~/.claude/skills/orchestrator/` |
+| `pm/` `pe/` `sde/` `qae/` `ux/` | Skill definitions + example outputs | Reference — see how each skill is structured | Skills are read by the commands in `claude/commands/` |
+| `project/` | Skill manifest | Internal routing metadata | Used by the orchestrator for skill dependency tracking |
 
-- **README.md** = for you, reading on GitHub
-- **CLAUDE.md** = for Claude Code, loaded as project context
+### What You Actually Install
 
-Both are needed. Don't delete CLAUDE.md — without it, Claude won't know how to use the skills properly.
+For most users, you only need to copy **3 things**:
+
+```bash
+# 1. Slash commands (required)
+cp -r claude/commands/ ~/.claude/commands/
+
+# 2. Orchestrator skill (if you want /orchestrator)
+mkdir -p ~/.claude/skills/orchestrator
+cp orchestrator/SKILL.md ~/.claude/skills/orchestrator/SKILL.md
+
+# 3. Domain agents (if you want /pm-orchestrator, /sde-orchestrator, etc.)
+mkdir -p ~/.claude/skills/agents
+cp agents/*.md ~/.claude/skills/agents/
+```
+
+If you only want individual skills (like `/sde-tdd` or `/gap-analyst`), step 1 alone is enough.
 
 ---
 
