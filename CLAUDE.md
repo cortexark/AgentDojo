@@ -79,11 +79,10 @@ pm/
 
 ## Principal Engineer Skills (invoke with `/skill-name`)
 
-Synthesized from 7 books: Staff Engineer (Larson), The Staff Engineer's Path (Reilly), The Software Engineer's Guidebook (Orosz), An Elegant Puzzle (Larson), The Principal Engineer's Handbook (Grigorik), Good Strategy/Bad Strategy (Rumelt), The Effective Engineer (Lau).
 
 | Skill | Command | What It Does |
 |-------|---------|-------------|
-| Tech Strategy | `/tech-strategy [topic]` | Engineering strategy & vision using Rumelt's kernel, bad strategy detection |
+| Tech Strategy | `/tech-strategy [topic]` | Engineering strategy & vision, strategy kernel, bad strategy detection |
 | Architecture Reviewer | `/architecture-reviewer [RFC/design]` | RFC review, design quality assessment, ADR writing, rough consensus |
 | Technical Quality | `/technical-quality [system]` | 7-tier quality progression, DORA metrics, tech debt management |
 | Migration Planner | `/migration-planner [migration]` | De-Risk/Enable/Finish framework for large-scale migrations |
@@ -100,7 +99,7 @@ Synthesized from 7 books: Staff Engineer (Larson), The Staff Engineer's Path (Re
 ```
 tech-strategy --> architecture-reviewer --> decision-facilitator
       |                                          |
-      +-- Rumelt's Strategy Kernel               +-- Rough Consensus
+      +-- Strategy Kernel                        +-- Rough Consensus
       +-- Bad Strategy Detection                 +-- Unstuck Techniques
 
 technical-quality --> leverage-analyzer --> migration-planner
@@ -141,7 +140,6 @@ pe/
 ## PE Conventions
 - Skills save outputs to `pe/` subdirectories with descriptive filenames
 - Templates use markdown with structured tables for assessments
-- Every framework references its source book for credibility
 - Skills cross-reference each other (org-health informs leverage-analyzer, etc.)
 - Decision records include reasoning, not just outcomes
 
@@ -149,9 +147,6 @@ pe/
 
 ## Senior SDE Skills (invoke with `/sde-*`)
 
-Synthesized from 11 books in two groups:
-- **Fundamentals:** The Pragmatic Programmer (Hunt & Thomas), Clean Architecture (Martin), Code Complete (McConnell), Software Requirements (Wiegers & Beatty), The Mythical Man-Month (Brooks), Thinking in Systems (Meadows)
-- **System Design:** System Design Interview Vol 1 & 2 (Alex Xu), ML System Design Interview (Aminian & Xu), Designing Data-Intensive Applications (Kleppmann), System Design at Google
 
 **Core Philosophy: TDD-First.** Every feature starts with a failing test. Every bug fix starts with a test that reproduces it.
 
@@ -222,7 +217,6 @@ sde/
 
 ## QAE Skills (invoke with `/qae-*`)
 
-Synthesized from 4 books: The Complete Software Tester (Jackvony), Explore It! (Hendrickson), Agile Testing (Crispin & Gregory), A Friendly Introduction to Software Testing (Laboon).
 
 **Core Philosophy: Quality is Everyone's Responsibility.** The QAE writes detailed test strategies, test plans, and CI/CD pipelines. Combines automated testing (speed) with exploratory testing (insight).
 
@@ -305,7 +299,6 @@ qae/
 
 ## UI/UX Designer Skills (invoke with `/ux-*`)
 
-Synthesized from 20 books + Awwwards/Dribbble pattern analysis: Refactoring UI, Practical UI, How to Design Better UI Components 3.0, Better Web Typography, The Visual History of Type, UI Design Systems Mastery, The Design Manual, The Ultimate Guide to Web Design, Master UI Design Elements, Landing Page Hot Tips, Universal Principles of Design, UI Design Principles, Design Systems (Kholmatova), Laying the Foundations, UI is Communication, 100 UI/UX Tips & Tricks, Grid Systems in Graphic Design, Atomic Design (Frost), Thinking with Type (Lupton), About Face (Cooper).
 
 **Core Philosophy: Design is Communication.** Every skill contains concrete CSS values, pixel sizes, ratios, and production-ready patterns — not surface-level theory.
 

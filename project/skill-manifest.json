@@ -1,0 +1,797 @@
+{
+  "version": "1.0.0",
+  "description": "TaskPilot Skill Manifest — Dependencies, inputs, outputs, and quality gates for all 55+ skills",
+  "skills": {
+    "pm:research-agent": {
+      "domain": "pm",
+      "name": "Research Agent",
+      "description": "Deep competitor research and profiling: features, pricing, sentiment",
+      "required_inputs": [],
+      "outputs": [".pm/competitors/[company].md"],
+      "quality_gates": [
+        {"metric": "competitor_count", "condition": ">= 3", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["pm:gap-analyst"],
+      "next_skills_if_fail": [],
+      "phase": 1
+    },
+    "pm:gap-analyst": {
+      "domain": "pm",
+      "name": "Gap Analyst",
+      "description": "Identifies product gaps, deduplicates against backlog, scores with WINNING filter",
+      "required_inputs": [".pm/competitors/", ".pm/product/inventory.md"],
+      "outputs": [".pm/gaps/[date]-analysis.md"],
+      "quality_gates": [
+        {"metric": "evidence_required", "condition": "== true", "severity": "HARD"},
+        {"metric": "winning_score", "condition": ">= 25", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["pm:prd-generator"],
+      "next_skills_if_fail": ["pm:research-agent"],
+      "phase": 3
+    },
+    "pm:prd-generator": {
+      "domain": "pm",
+      "name": "PRD Generator",
+      "description": "Generates structured PRDs and files as GitHub Issues",
+      "required_inputs": [".pm/gaps/[date]-analysis.md"],
+      "outputs": [".pm/prds/[feature].md"],
+      "quality_gates": [
+        {"metric": "scope_locked", "condition": "== true", "severity": "HARD"},
+        {"metric": "acceptance_criteria_count", "condition": ">= 5", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["ux:design-system"],
+      "next_skills_if_fail": ["pm:discovery-validator"],
+      "phase": 3,
+      "inter_domain_handoff_to": "ux:design-system"
+    },
+    "pm:discovery-validator": {
+      "domain": "pm",
+      "name": "Discovery Validator",
+      "description": "Turns ideas into testable hypotheses, designs cheapest experiments",
+      "required_inputs": [".pm/gaps/"],
+      "outputs": [".pm/experiments/[hypothesis].md"],
+      "quality_gates": [
+        {"metric": "hypothesis_testable", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["pm:experiment-designer"],
+      "next_skills_if_fail": [],
+      "phase": 2
+    },
+    "pm:experiment-designer": {
+      "domain": "pm",
+      "name": "Experiment Designer",
+      "description": "Hypothesis cards, A/B test plans, cohort analysis, innovation accounting",
+      "required_inputs": [".pm/experiments/"],
+      "outputs": [".pm/experiments/[experiment]-plan.md"],
+      "quality_gates": [
+        {"metric": "success_metric_defined", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["pm:metrics-advisor"],
+      "next_skills_if_fail": [],
+      "phase": 2
+    },
+    "pm:prioritization-engine": {
+      "domain": "pm",
+      "name": "Prioritization Engine",
+      "description": "RICE/Kano/MoSCoW/ICE scoring, outcome-based roadmaps",
+      "required_inputs": [".pm/gaps/", ".pm/prds/"],
+      "outputs": [".pm/roadmap/[date]-prioritized.md"],
+      "quality_gates": [
+        {"metric": "conflicts", "condition": "< 3", "severity": "WARN"},
+        {"metric": "scoring_method_applied", "condition": "!= null", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["pm:metrics-advisor"],
+      "next_skills_if_fail": ["pm:gap-analyst"],
+      "phase": 3
+    },
+    "pm:metrics-advisor": {
+      "domain": "pm",
+      "name": "Metrics Advisor",
+      "description": "North star metrics, metric trees, OKR templates, vanity metric audits",
+      "required_inputs": [".pm/prds/"],
+      "outputs": [".pm/metrics/[feature]-metrics.md"],
+      "quality_gates": [
+        {"metric": "north_star_defined", "condition": "== true", "severity": "HARD"},
+        {"metric": "success_metrics_count", "condition": ">= 3", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["pm:stakeholder-communicator"],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "pm:customer-research": {
+      "domain": "pm",
+      "name": "Customer Research",
+      "description": "Research program design, interview scripts, personas, JTBD",
+      "required_inputs": [],
+      "outputs": [".pm/research/[topic]-research.md"],
+      "quality_gates": [
+        {"metric": "interview_count", "condition": ">= 5", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["pm:discovery-validator"],
+      "next_skills_if_fail": [],
+      "phase": 1
+    },
+    "pm:stakeholder-communicator": {
+      "domain": "pm",
+      "name": "Stakeholder Communicator",
+      "description": "Status reports, stakeholder maps, decision logs, alignment docs",
+      "required_inputs": [".pm/prds/", ".pm/metrics/"],
+      "outputs": [".pm/stakeholder/status-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 8
+    },
+    "pm:pivot-analyzer": {
+      "domain": "pm",
+      "name": "Pivot Analyzer",
+      "description": "PMF signal assessment, pivot type mapping, decision reports",
+      "required_inputs": [".pm/metrics/", ".pm/experiments/"],
+      "outputs": [".pm/analysis/pivot-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 9
+    },
+    "pm:buyer-psychology": {
+      "domain": "pm",
+      "name": "Buyer Psychology",
+      "description": "Buyer profiles, cognitive biases, switching forces, churn psychology",
+      "required_inputs": [".pm/research/"],
+      "outputs": [".pm/psychology/[segment]-profile.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 2
+    },
+    "ux:design-system": {
+      "domain": "ux",
+      "name": "Design System",
+      "description": "Atomic Design hierarchy, design tokens, component maturity model",
+      "required_inputs": [".pm/prds/"],
+      "outputs": [".ux/design-systems/tokens.json", ".ux/design-systems/components.md"],
+      "quality_gates": [
+        {"metric": "tokens_defined", "condition": ">= 50", "severity": "WARN"},
+        {"metric": "design_system_complete", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["ux:component-design"],
+      "next_skills_if_fail": [],
+      "phase": 4,
+      "inter_domain_handoff_from": "pm:prd-generator",
+      "inter_domain_handoff_to": "sde:system-design"
+    },
+    "ux:color-system": {
+      "domain": "ux",
+      "name": "Color System",
+      "description": "HSL palettes, WCAG contrast, dark mode tokens, 60-30-10 rule",
+      "required_inputs": [".ux/design-systems/"],
+      "outputs": [".ux/colors/palette.css"],
+      "quality_gates": [
+        {"metric": "wcag_contrast_aa", "condition": "== true", "severity": "HARD"},
+        {"metric": "dark_mode_defined", "condition": "== true", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["ux:typography"],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:typography": {
+      "domain": "ux",
+      "name": "Typography",
+      "description": "Modular type scales, font pairing, clamp() fluid sizing, vertical rhythm",
+      "required_inputs": [".ux/design-systems/"],
+      "outputs": [".ux/typography/type-scale.css"],
+      "quality_gates": [
+        {"metric": "type_scale_defined", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["ux:visual-hierarchy"],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:visual-hierarchy": {
+      "domain": "ux",
+      "name": "Visual Hierarchy",
+      "description": "8pt grid, spacing scales, Gestalt principles, whitespace mastery",
+      "required_inputs": [".ux/design-systems/"],
+      "outputs": [".ux/layouts/grid-system.md"],
+      "quality_gates": [
+        {"metric": "grid_system_defined", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["ux:component-design"],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:component-design": {
+      "domain": "ux",
+      "name": "Component Design",
+      "description": "State matrices, button/form/card/modal design, all states + sizes",
+      "required_inputs": [".ux/design-systems/", ".ux/typography/", ".ux/colors/"],
+      "outputs": [".ux/components/[component]-spec.md"],
+      "quality_gates": [
+        {"metric": "state_matrix_complete", "condition": "== true", "severity": "HARD"},
+        {"metric": "accessibility_audit_pass", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["ux:responsive"],
+      "next_skills_if_fail": ["ux:accessibility"],
+      "phase": 4,
+      "loop_condition": "accessibility_audit_pass == false"
+    },
+    "ux:responsive": {
+      "domain": "ux",
+      "name": "Responsive",
+      "description": "Mobile-first CSS, breakpoints, container queries, touch targets",
+      "required_inputs": [".ux/components/"],
+      "outputs": [".ux/responsive/breakpoints.md"],
+      "quality_gates": [
+        {"metric": "mobile_first", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["ux:interaction-design"],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:interaction-design": {
+      "domain": "ux",
+      "name": "Interaction Design",
+      "description": "Micro-interactions, CSS timing, motion systems, loading states",
+      "required_inputs": [".ux/components/"],
+      "outputs": [".ux/interactions/motion-spec.css"],
+      "quality_gates": [],
+      "next_skills_if_pass": ["ux:accessibility"],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:accessibility": {
+      "domain": "ux",
+      "name": "Accessibility",
+      "description": "WCAG 2.2 compliance, keyboard nav, ARIA, focus management",
+      "required_inputs": [".ux/components/"],
+      "outputs": [".ux/accessibility/wcag-audit.md"],
+      "quality_gates": [
+        {"metric": "wcag_level_aa", "condition": "== true", "severity": "HARD"},
+        {"metric": "keyboard_navigation", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": ["ux:component-design"],
+      "phase": 4
+    },
+    "ux:landing-page": {
+      "domain": "ux",
+      "name": "Landing Page",
+      "description": "Hero patterns, CTA hierarchy, social proof, conversion optimization",
+      "required_inputs": [".ux/design-systems/"],
+      "outputs": [".ux/landing-pages/[page]-spec.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:dashboard": {
+      "domain": "ux",
+      "name": "Dashboard",
+      "description": "Chart selection, KPI cards, data tables, filter patterns",
+      "required_inputs": [".ux/design-systems/"],
+      "outputs": [".ux/dashboards/[dashboard]-spec.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "ux:review": {
+      "domain": "ux",
+      "name": "Design Review",
+      "description": "Nielsen's 10 Heuristics, scoring rubrics, critique frameworks",
+      "required_inputs": [".ux/components/", ".ux/design-systems/"],
+      "outputs": [".ux/reviews/design-critique-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 4
+    },
+    "sde:system-design": {
+      "domain": "sde",
+      "name": "System Design",
+      "description": "4-step framework, estimation, CAP theorem, trade-off analysis",
+      "required_inputs": [".pm/prds/", ".ux/design-systems/"],
+      "outputs": [".sde/designs/[system]-design.md"],
+      "quality_gates": [
+        {"metric": "estimation_complete", "condition": "== true", "severity": "HARD"},
+        {"metric": "capacity_planning_done", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["sde:architecture"],
+      "next_skills_if_fail": [],
+      "phase": 5,
+      "inter_domain_handoff_from": "ux:design-system",
+      "inter_domain_handoff_to": "sde:architecture"
+    },
+    "sde:architecture": {
+      "domain": "sde",
+      "name": "Architecture",
+      "description": "SOLID principles, clean architecture layers, dependency rule",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".sde/architecture/[system]-adr.md"],
+      "quality_gates": [
+        {"metric": "solid_violations", "condition": "== 0", "severity": "HARD"},
+        {"metric": "architecture_review_approved", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["sde:data-systems"],
+      "next_skills_if_fail": [],
+      "phase": 5
+    },
+    "sde:data-systems": {
+      "domain": "sde",
+      "name": "Data Systems",
+      "description": "Data models, replication, partitioning, consistency, batch/stream",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".sde/data-systems/[schema].md"],
+      "quality_gates": [
+        {"metric": "schema_normalized", "condition": "== true", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["sde:requirements"],
+      "next_skills_if_fail": [],
+      "phase": 5
+    },
+    "sde:requirements": {
+      "domain": "sde",
+      "name": "Requirements",
+      "description": "Elicitation, specification, validation, traceability matrices",
+      "required_inputs": [".pm/prds/", ".sde/designs/"],
+      "outputs": [".sde/requirements/[feature]-spec.md"],
+      "quality_gates": [
+        {"metric": "traceability_matrix", "condition": "== true", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["sde:tdd"],
+      "next_skills_if_fail": [],
+      "phase": 6
+    },
+    "sde:tdd": {
+      "domain": "sde",
+      "name": "TDD",
+      "description": "Red-green-refactor, testing pyramid, test doubles, FIRST principles",
+      "required_inputs": [".sde/requirements/"],
+      "outputs": [".sde/tests/[feature].test.js"],
+      "quality_gates": [
+        {"metric": "test_count", "condition": ">= 10", "severity": "WARN"},
+        {"metric": "tests_passing", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["sde:code-craftsman"],
+      "next_skills_if_fail": [],
+      "phase": 6
+    },
+    "sde:code-craftsman": {
+      "domain": "sde",
+      "name": "Code Craftsman",
+      "description": "Clean code, DRY, naming, guard clauses, construction quality",
+      "required_inputs": ["project code"],
+      "outputs": [".sde/code/refactored-[module].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": ["sde:code-review"],
+      "next_skills_if_fail": [],
+      "phase": 6,
+      "loop_from": ["sde:code-review"]
+    },
+    "sde:code-review": {
+      "domain": "sde",
+      "name": "Code Review",
+      "description": "Review checklists, quality gates, SOLID compliance, security",
+      "required_inputs": ["project code", ".sde/reviews/*"],
+      "outputs": [".sde/reviews/pr-[id].md"],
+      "quality_gates": [
+        {"metric": "severity", "condition": "< HIGH", "severity": "HARD"},
+        {"metric": "test_coverage", "condition": ">= 80", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["qae:test-strategy"],
+      "next_skills_if_fail": ["sde:code-craftsman"],
+      "phase": 6,
+      "loop_condition": "severity >= HIGH || test_coverage < 80"
+    },
+    "sde:systems-thinking": {
+      "domain": "sde",
+      "name": "Systems Thinking",
+      "description": "Feedback loops, leverage points, system archetypes, Brooks's Law",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".sde/systems/[analysis].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 5
+    },
+    "sde:ml-design": {
+      "domain": "sde",
+      "name": "ML Design",
+      "description": "ML pipelines, feature stores, model serving, monitoring",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".sde/ml/[pipeline]-design.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 5
+    },
+    "sde:debugging": {
+      "domain": "sde",
+      "name": "Debugging",
+      "description": "Systematic debugging, root cause analysis, defensive programming",
+      "required_inputs": [".qae/defects/"],
+      "outputs": [".sde/debugging/[bug]-fix.md"],
+      "quality_gates": [
+        {"metric": "fix_verified", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["sde:tdd"],
+      "next_skills_if_fail": [],
+      "phase": 7,
+      "loop_from": ["qae:defect-management"],
+      "loop_condition": "severity == HIGH"
+    },
+    "sde:estimation": {
+      "domain": "sde",
+      "name": "Estimation",
+      "description": "PERT estimation, Brooks's Law, scheduling, risk buffers",
+      "required_inputs": [".sde/requirements/"],
+      "outputs": [".sde/estimates/[project]-estimate.md"],
+      "quality_gates": [
+        {"metric": "risk_buffer_percentage", "condition": ">= 30", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "qae:test-strategy": {
+      "domain": "qae",
+      "name": "Test Strategy",
+      "description": "Comprehensive test strategies, risk-based approaches, coverage models",
+      "required_inputs": [".pm/prds/", ".sde/designs/"],
+      "outputs": [".qae/strategies/[project]-strategy.md"],
+      "quality_gates": [
+        {"metric": "coverage_baseline_defined", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["qae:test-plan"],
+      "next_skills_if_fail": [],
+      "phase": 7,
+      "inter_domain_handoff_from": "sde:code-review",
+      "inter_domain_handoff_to": "qae:test-plan"
+    },
+    "qae:test-plan": {
+      "domain": "qae",
+      "name": "Test Plan",
+      "description": "Detailed test plans with scope, entry/exit criteria, deliverables",
+      "required_inputs": [".qae/strategies/"],
+      "outputs": [".qae/plans/[release]-plan.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": ["qae:test-automation"],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:test-automation": {
+      "domain": "qae",
+      "name": "Test Automation",
+      "description": "Framework selection, automation pyramid, ROI analysis",
+      "required_inputs": [".qae/plans/"],
+      "outputs": [".qae/automation/[project]-framework.md"],
+      "quality_gates": [
+        {"metric": "test_count", "condition": ">= 50", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["qae:api-testing"],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:api-testing": {
+      "domain": "qae",
+      "name": "API Testing",
+      "description": "REST/GraphQL testing, contract testing, schema validation",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".qae/api/[api]-tests.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": ["qae:performance"],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:performance": {
+      "domain": "qae",
+      "name": "Performance Testing",
+      "description": "Load/stress/soak testing, capacity planning, bottleneck analysis",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".qae/performance/[system]-baseline.md"],
+      "quality_gates": [
+        {"metric": "sla_met", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["qae:security"],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:security": {
+      "domain": "qae",
+      "name": "Security Testing",
+      "description": "OWASP Top 10, STRIDE threat modeling, vulnerability scanning",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".qae/security/threat-model.md"],
+      "quality_gates": [
+        {"metric": "critical_vulns", "condition": "== 0", "severity": "HARD"},
+        {"metric": "high_vulns", "condition": "<= 2", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": ["qae:exploratory"],
+      "next_skills_if_fail": ["sde:debugging"],
+      "phase": 7,
+      "loop_condition": "critical_vulns > 0"
+    },
+    "qae:exploratory": {
+      "domain": "qae",
+      "name": "Exploratory Testing",
+      "description": "Session-based testing, charters, heuristics, risk-based exploration",
+      "required_inputs": [".qae/strategies/"],
+      "outputs": [".qae/exploratory/session-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": ["qae:defect-management"],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:defect-management": {
+      "domain": "qae",
+      "name": "Defect Management",
+      "description": "Bug lifecycle, root cause analysis, severity classification, metrics",
+      "required_inputs": [".qae/exploratory/", ".qae/automation/"],
+      "outputs": [".qae/defects/[date]-report.md"],
+      "quality_gates": [
+        {"metric": "critical_defects", "condition": "== 0", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": ["qae:quality-metrics"],
+      "next_skills_if_fail": ["sde:debugging"],
+      "phase": 7,
+      "loop_condition": "critical_defects > 0 || high_defects > 5"
+    },
+    "qae:quality-metrics": {
+      "domain": "qae",
+      "name": "Quality Metrics",
+      "description": "Test coverage, defect density, dashboards, release readiness",
+      "required_inputs": [".qae/defects/"],
+      "outputs": [".qae/metrics/quality-[date].md"],
+      "quality_gates": [
+        {"metric": "coverage_meets_baseline", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:cicd-pipeline": {
+      "domain": "qae",
+      "name": "CI/CD Pipeline",
+      "description": "Pipeline design, quality gates, deployment strategies",
+      "required_inputs": [".qae/strategies/"],
+      "outputs": [".qae/pipelines/pipeline-config.yaml"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "qae:test-data": {
+      "domain": "qae",
+      "name": "Test Data",
+      "description": "Data generation, masking, synthetic data, environment management",
+      "required_inputs": [".sde/designs/"],
+      "outputs": [".qae/test-data/strategy.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 7
+    },
+    "pe:tech-strategy": {
+      "domain": "pe",
+      "name": "Tech Strategy",
+      "description": "Engineering strategy & vision, strategy kernel, bad strategy detection",
+      "required_inputs": [".pm/prds/"],
+      "outputs": [".pe/strategy/[topic]-strategy.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "pe:architecture-reviewer": {
+      "domain": "pe",
+      "name": "Architecture Reviewer",
+      "description": "RFC review, design quality assessment, ADR writing, rough consensus",
+      "required_inputs": [".sde/designs/", ".sde/architecture/"],
+      "outputs": [".pe/architecture/review-[date].md"],
+      "quality_gates": [
+        {"metric": "review_approved", "condition": "== true", "severity": "HARD"}
+      ],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": ["sde:system-design"],
+      "phase": 5,
+      "loop_from": ["sde:architecture"]
+    },
+    "pe:technical-quality": {
+      "domain": "pe",
+      "name": "Technical Quality",
+      "description": "7-tier quality progression, DORA metrics, tech debt management",
+      "required_inputs": [".sde/code/"],
+      "outputs": [".pe/quality/[system]-quality.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 6
+    },
+    "pe:migration-planner": {
+      "domain": "pe",
+      "name": "Migration Planner",
+      "description": "De-Risk/Enable/Finish framework for large-scale migrations",
+      "required_inputs": [],
+      "outputs": [".pe/migrations/[migration]-plan.md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 5
+    },
+    "pe:leverage-analyzer": {
+      "domain": "pe",
+      "name": "Leverage Analyzer",
+      "description": "Impact/time analysis, anti-pattern detection, high-leverage activity catalog",
+      "required_inputs": [".sde/estimates/"],
+      "outputs": [".pe/leverage/analysis-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "pe:org-health": {
+      "domain": "pe",
+      "name": "Org Health",
+      "description": "Team state diagnosis, sizing rules, chain-link bottleneck analysis",
+      "required_inputs": [],
+      "outputs": [".pe/org/health-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 1
+    },
+    "pe:influence-navigator": {
+      "domain": "pe",
+      "name": "Influence Navigator",
+      "description": "Nemawashi, radiating intent, stakeholder alignment, Three Maps",
+      "required_inputs": [],
+      "outputs": [".pe/decisions/alignment-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "pe:decision-facilitator": {
+      "domain": "pe",
+      "name": "Decision Facilitator",
+      "description": "Decision classification, facilitation templates, unstuck techniques",
+      "required_inputs": [],
+      "outputs": [".pe/decisions/decision-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 3
+    },
+    "pe:mentorship-sponsorship": {
+      "domain": "pe",
+      "name": "Mentorship & Sponsorship",
+      "description": "Growth plans, sponsorship playbook, feedback frameworks",
+      "required_inputs": [],
+      "outputs": [".pe/mentorship/plan-[person].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 1
+    },
+    "pe:incident-reliability": {
+      "domain": "pe",
+      "name": "Incident & Reliability",
+      "description": "Post-mortems, reliability reviews, operational burden reduction",
+      "required_inputs": [".qae/defects/"],
+      "outputs": [".pe/incidents/postmortem-[date].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 9
+    },
+    "pe:career-navigator": {
+      "domain": "pe",
+      "name": "Career Navigator",
+      "description": "Staff+ archetypes, promotion packets, career self-assessment",
+      "required_inputs": [],
+      "outputs": [".pe/career/packet-[person].md"],
+      "quality_gates": [],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 1
+    },
+    "orchestrator": {
+      "domain": "orchestrator",
+      "name": "Master Orchestrator",
+      "description": "Orchestrate the full project lifecycle across all 5 domains (PM, PE, SDE, QAE, UX) — from idea inception through delivery and feedback",
+      "required_inputs": [],
+      "outputs": [".project/status.md", ".project/deliverables.md"],
+      "quality_gates": [
+        {"metric": "lifecycle_complete", "condition": "== true", "severity": "WARN"}
+      ],
+      "next_skills_if_pass": [],
+      "next_skills_if_fail": [],
+      "phase": 0,
+      "is_orchestrator": true
+    }
+  },
+  "phase_gates": {
+    "phase_1": {
+      "name": "Discovery",
+      "hard_blocks": [
+        "Market validation complete"
+      ],
+      "soft_warnings": []
+    },
+    "phase_2": {
+      "name": "Validation",
+      "hard_blocks": [
+        "Hypothesis tested",
+        "Success metrics defined"
+      ],
+      "soft_warnings": []
+    },
+    "phase_3": {
+      "name": "Planning",
+      "hard_blocks": [
+        "Scope locked",
+        "Effort <= available capacity",
+        "Stakeholder alignment >= 80%"
+      ],
+      "soft_warnings": [
+        "Risk buffer >= 30%"
+      ]
+    },
+    "phase_4": {
+      "name": "Design",
+      "hard_blocks": [
+        "Design system complete",
+        "WCAG audit passing"
+      ],
+      "soft_warnings": [
+        "Mobile testing plan ready"
+      ]
+    },
+    "phase_5": {
+      "name": "Architecture",
+      "hard_blocks": [
+        "ADRs signed off",
+        "SOLID compliance",
+        "Capacity planning done"
+      ],
+      "soft_warnings": [
+        "Schema normalized"
+      ]
+    },
+    "phase_6": {
+      "name": "Build",
+      "hard_blocks": [
+        "Coverage >= 80%",
+        "All PRs approved",
+        "No severity HIGH findings"
+      ],
+      "soft_warnings": []
+    },
+    "phase_7": {
+      "name": "Quality",
+      "hard_blocks": [
+        "Coverage >= baseline",
+        "Defects triaged",
+        "Performance < SLA",
+        "Security: no critical vulns"
+      ],
+      "soft_warnings": [
+        "Exploratory testing complete"
+      ]
+    },
+    "phase_8": {
+      "name": "Launch",
+      "hard_blocks": [
+        "Go/no-go decision made",
+        "Monitoring validated",
+        "Team briefed"
+      ],
+      "soft_warnings": []
+    },
+    "phase_9": {
+      "name": "Feedback",
+      "hard_blocks": [],
+      "soft_warnings": []
+    }
+  }
+}
