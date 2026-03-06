@@ -1,0 +1,490 @@
+version: "0.1.0"
+name: Inter-Role Challenge Rules
+description: Challenge and escalation rules between roles in TaskPilot
+
+challenges:
+  pm_challenges_sde_scope_creep:
+    challenger_role: PM
+    challenged_role: SDE
+    description: "PM challenges SDE on scope creep and requirement violations"
+    challenge_triggers:
+      - condition: "new_features_added_outside_sprint"
+        threshold: "> 0"
+      - condition: "original_requirements_deviation"
+        threshold: "> 10%"
+      - condition: "timeline_impact"
+        evidence_required: true
+    required_evidence:
+      - feature_specification_delta
+      - timeline_impact_analysis
+      - customer_requirement_reference
+    resolution_sla_hours: 24
+    escalation_ladder:
+      - step: 1
+        action: "SDE provides impact analysis and justification"
+        timeout_hours: 4
+      - step: 2
+        action: "PM and SDE conduct joint review"
+        timeout_hours: 8
+      - step: 3
+        action: "Engineering Lead mediates"
+        timeout_hours: 12
+      - step: 4
+        action: "CTO final decision"
+        timeout_hours: 24
+    human_in_loop: true
+    impact_if_unresolved: "scope_creep_continues"
+    resolution_options:
+      - revert_to_original_scope
+      - renegotiate_timeline
+      - reduce_quality_bar
+      - split_into_next_sprint
+
+  pm_challenges_sde_customer_value:
+    challenger_role: PM
+    challenged_role: SDE
+    description: "PM challenges SDE on customer value delivery"
+    challenge_triggers:
+      - condition: "feature_completion_rate"
+        threshold: "< 80%"
+      - condition: "customer_value_metrics"
+        threshold: "< expected_baseline"
+      - condition: "stakeholder_satisfaction"
+        threshold: "< 7/10"
+    required_evidence:
+      - completion_metrics
+      - customer_feedback_data
+      - value_realization_analysis
+    resolution_sla_hours: 48
+    escalation_ladder:
+      - step: 1
+        action: "SDE provides value delivery plan"
+        timeout_hours: 8
+      - step: 2
+        action: "Product Manager review and validation"
+        timeout_hours: 16
+      - step: 3
+        action: "Customer advisory board consultation"
+        timeout_hours: 24
+      - step: 4
+        action: "Executive steering committee"
+        timeout_hours: 48
+    human_in_loop: true
+    impact_if_unresolved: "customer_value_at_risk"
+    resolution_options:
+      - accelerate_implementation
+      - add_engineering_resources
+      - simplify_feature_scope
+      - pivot_to_higher_value_items
+
+  pm_challenges_ux_scope:
+    challenger_role: PM
+    challenged_role: UX
+    description: "PM challenges UX on scope alignment"
+    challenge_triggers:
+      - condition: "design_timeline_overrun"
+        threshold: "> 20%"
+      - condition: "design_scope_expansion"
+        threshold: "> 15%"
+    required_evidence:
+      - design_specification_comparison
+      - timeline_impact_assessment
+    resolution_sla_hours: 24
+    escalation_ladder:
+      - step: 1
+        action: "UX Lead provides justification"
+        timeout_hours: 4
+      - step: 2
+        action: "PM and UX Lead joint meeting"
+        timeout_hours: 8
+      - step: 3
+        action: "Design Director mediation"
+        timeout_hours: 12
+      - step: 4
+        action: "VP Product final decision"
+        timeout_hours: 24
+    human_in_loop: true
+    impact_if_unresolved: "design_scope_creep"
+    resolution_options:
+      - scope_reduction
+      - timeline_extension
+      - phased_delivery
+      - design_simplification
+
+  sde_challenges_pm_feasibility:
+    challenger_role: SDE
+    challenged_role: PM
+    description: "SDE challenges PM on technical feasibility"
+    challenge_triggers:
+      - condition: "technical_complexity_underestimated"
+        evidence_required: true
+      - condition: "timeline_technically_impossible"
+        evidence_required: true
+      - condition: "resource_insufficiency"
+        threshold: true
+    required_evidence:
+      - complexity_analysis
+      - timeline_feasibility_study
+      - resource_requirement_breakdown
+      - risk_assessment
+    resolution_sla_hours: 24
+    escalation_ladder:
+      - step: 1
+        action: "SDE presents technical analysis to PM"
+        timeout_hours: 4
+      - step: 2
+        action: "Engineering Lead review and validation"
+        timeout_hours: 8
+      - step: 3
+        action: "Technical Architect assessment"
+        timeout_hours: 12
+      - step: 4
+        action: "CTO decision and timeline adjustment"
+        timeout_hours: 24
+    human_in_loop: true
+    impact_if_unresolved: "missed_deadline"
+    resolution_options:
+      - extend_timeline
+      - reduce_scope
+      - increase_resources
+      - use_third_party_solutions
+      - defer_to_next_release
+
+  sde_challenges_pm_architecture_debt:
+    challenger_role: SDE
+    challenged_role: PM
+    description: "SDE challenges PM on architecture debt risk"
+    challenge_triggers:
+      - condition: "technical_debt_accrual"
+        threshold: "> 30 story_points"
+      - condition: "architecture_quality_degradation"
+        threshold: "> 20%"
+      - condition: "maintenance_cost_increase"
+        threshold: "> 25%"
+    required_evidence:
+      - debt_quantification
+      - impact_analysis
+      - refactoring_cost_estimate
+    resolution_sla_hours: 72
+    escalation_ladder:
+      - step: 1
+        action: "SDE prepares architecture debt proposal"
+        timeout_hours: 8
+      - step: 2
+        action: "Engineering Lead and PM review"
+        timeout_hours: 24
+      - step: 3
+        action: "Architecture review board assessment"
+        timeout_hours: 48
+      - step: 4
+        action: "CTO and VP Product decision"
+        timeout_hours: 72
+    human_in_loop: true
+    impact_if_unresolved: "system_degradation"
+    resolution_options:
+      - allocate_refactoring_sprint
+      - schedule_debt_paydown
+      - accept_risk
+      - phased_modernization
+
+  pe_challenges_sde_performance_regression:
+    challenger_role: PE
+    challenged_role: SDE
+    description: "PE challenges SDE on performance regressions"
+    challenge_triggers:
+      - condition: "response_time_degradation"
+        threshold: "> 15%"
+      - condition: "throughput_reduction"
+        threshold: "> 10%"
+      - condition: "resource_consumption_increase"
+        threshold: "> 20%"
+      - condition: "sla_violation"
+        evidence_required: true
+    required_evidence:
+      - performance_metrics_comparison
+      - baseline_vs_current_data
+      - root_cause_analysis
+      - impact_quantification
+    resolution_sla_hours: 48
+    escalation_ladder:
+      - step: 1
+        action: "SDE investigates and provides mitigation plan"
+        timeout_hours: 8
+      - step: 2
+        action: "PE and SDE performance review"
+        timeout_hours: 16
+      - step: 3
+        action: "Architecture review if systemic issue"
+        timeout_hours: 24
+      - step: 4
+        action: "CTO and Engineering Lead decision"
+        timeout_hours: 48
+    human_in_loop: true
+    impact_if_unresolved: "production_performance_impact"
+    resolution_options:
+      - optimize_code
+      - scale_infrastructure
+      - reduce_feature_scope
+      - rollback_change
+
+  pe_challenges_sde_scalability:
+    challenger_role: PE
+    challenged_role: SDE
+    description: "PE challenges SDE on scalability concerns"
+    challenge_triggers:
+      - condition: "scalability_limit_reached"
+        threshold: true
+      - condition: "projected_growth_unsustainable"
+        evidence_required: true
+      - condition: "infrastructure_cost_explosion"
+        threshold: "> 40%"
+    required_evidence:
+      - scalability_analysis
+      - load_projection
+      - cost_impact_study
+    resolution_sla_hours: 72
+    escalation_ladder:
+      - step: 1
+        action: "SDE proposes scalability solution"
+        timeout_hours: 12
+      - step: 2
+        action: "Infrastructure and PE review"
+        timeout_hours: 24
+      - step: 3
+        action: "Architecture board assessment"
+        timeout_hours: 48
+      - step: 4
+        action: "CTO and CFO decision on resource allocation"
+        timeout_hours: 72
+    human_in_loop: true
+    impact_if_unresolved: "system_outage_at_scale"
+    resolution_options:
+      - implement_caching_layer
+      - refactor_architecture
+      - add_infrastructure
+      - feature_rate_limiting
+
+  qa_challenges_sde_coverage:
+    challenger_role: QA
+    challenged_role: SDE
+    description: "QA challenges SDE on test coverage gaps"
+    challenge_triggers:
+      - condition: "test_coverage_regression"
+        threshold: "> 5%"
+      - condition: "uncovered_code_paths"
+        threshold: "> 10%"
+      - condition: "critical_path_coverage"
+        threshold: "< 95%"
+    required_evidence:
+      - coverage_report
+      - gap_analysis
+      - risk_assessment_of_gaps
+    resolution_sla_hours: 24
+    escalation_ladder:
+      - step: 1
+        action: "SDE adds test coverage"
+        timeout_hours: 4
+      - step: 2
+        action: "QA Lead review of new tests"
+        timeout_hours: 8
+      - step: 3
+        action: "QA and SDE coverage review"
+        timeout_hours: 12
+      - step: 4
+        action: "Engineering Lead decision on quality bar"
+        timeout_hours: 24
+    human_in_loop: true
+    impact_if_unresolved: "untested_code_in_production"
+    resolution_options:
+      - increase_unit_test_coverage
+      - add_integration_tests
+      - accept_risk_with_monitoring
+      - reduce_feature_scope
+
+  qa_challenges_everyone_flaky_tests:
+    challenger_role: QA
+    challenged_role: [SDE, PM, PE]
+    description: "QA challenges team on flaky test failures"
+    challenge_triggers:
+      - condition: "test_flakiness_rate"
+        threshold: "> 5%"
+      - condition: "build_stability_degradation"
+        threshold: "> 10%"
+      - condition: "false_positive_rate"
+        threshold: "> 3%"
+    required_evidence:
+      - flakiness_evidence
+      - test_failure_logs
+      - root_cause_analysis
+    resolution_sla_hours: 48
+    escalation_ladder:
+      - step: 1
+        action: "Root cause investigation by SDE"
+        timeout_hours: 8
+      - step: 2
+        action: "QA and SDE analysis and fix plan"
+        timeout_hours: 16
+      - step: 3
+        action: "PE involvement if infrastructure issue"
+        timeout_hours: 24
+      - step: 4
+        action: "Engineering Lead enforcement of quality standards"
+        timeout_hours: 48
+    human_in_loop: true
+    impact_if_unresolved: "pipeline_unreliability"
+    resolution_options:
+      - fix_test_logic
+      - improve_test_environment
+      - increase_test_timeouts
+      - remove_unreliable_tests
+      - add_environmental_stabilization
+
+  qa_challenges_everyone_escape_rate:
+    challenger_role: QA
+    challenged_role: [SDE, PM, PE]
+    description: "QA challenges team on defect escape rate"
+    challenge_triggers:
+      - condition: "escape_rate"
+        threshold: "> 0.05"
+      - condition: "critical_defects_escaped"
+        evidence_required: true
+      - condition: "regression_escape"
+        threshold: "> 2"
+    required_evidence:
+      - defect_data
+      - severity_analysis
+      - root_cause_analysis
+      - escape_pattern_analysis
+    resolution_sla_hours: 72
+    escalation_ladder:
+      - step: 1
+        action: "Team Root Cause Analysis"
+        timeout_hours: 12
+      - step: 2
+        action: "Testing strategy review and adjustment"
+        timeout_hours: 24
+      - step: 3
+        action: "Process improvement recommendations"
+        timeout_hours: 48
+      - step: 4
+        action: "Quality gates adjustment and release readiness review"
+        timeout_hours: 72
+    human_in_loop: true
+    impact_if_unresolved: "quality_degradation_in_production"
+    resolution_options:
+      - increase_test_coverage
+      - implement_additional_test_phases
+      - add_manual_testing_gates
+      - extend_test_duration
+      - implement_monitoring_improvements
+
+  ux_challenges_pm_scope:
+    challenger_role: UX
+    challenged_role: PM
+    description: "UX challenges PM on scope alignment with user needs"
+    challenge_triggers:
+      - condition: "scope_misalignment_with_ux_research"
+        threshold: "> 20%"
+      - condition: "missing_user_validation"
+        evidence_required: true
+      - condition: "accessibility_requirements_unknown"
+        threshold: true
+    required_evidence:
+      - ux_research_data
+      - user_validation_results
+      - accessibility_assessment
+    resolution_sla_hours: 48
+    escalation_ladder:
+      - step: 1
+        action: "PM and UX present user research"
+        timeout_hours: 8
+      - step: 2
+        action: "Product Manager and UX Lead alignment"
+        timeout_hours: 16
+      - step: 3
+        action: "Customer feedback validation"
+        timeout_hours: 24
+      - step: 4
+        action: "VP Product decision"
+        timeout_hours: 48
+    human_in_loop: true
+    impact_if_unresolved: "user_experience_degradation"
+    resolution_options:
+      - conduct_additional_user_research
+      - adjust_scope
+      - redesign_feature
+      - defer_scope_to_v2
+
+  ux_challenges_sde_usability_regression:
+    challenger_role: UX
+    challenged_role: SDE
+    description: "UX challenges SDE on usability regression"
+    challenge_triggers:
+      - condition: "usability_metric_degradation"
+        threshold: "> 10%"
+      - condition: "task_completion_rate_drop"
+        threshold: "> 5%"
+      - condition: "user_satisfaction_decrease"
+        threshold: "> 0.5 points"
+    required_evidence:
+      - usability_testing_data
+      - user_feedback
+      - metric_comparison_baseline
+    resolution_sla_hours: 48
+    escalation_ladder:
+      - step: 1
+        action: "SDE and UX investigation of regression"
+        timeout_hours: 8
+      - step: 2
+        action: "UX proposed fixes and SDE implementation plan"
+        timeout_hours: 16
+      - step: 3
+        action: "Design Director review if design issue"
+        timeout_hours: 24
+      - step: 4
+        action: "VP Product final decision"
+        timeout_hours: 48
+    human_in_loop: true
+    impact_if_unresolved: "user_experience_degradation"
+    resolution_options:
+      - revert_change
+      - improve_implementation
+      - adjust_design
+      - add_user_guidance
+
+  ux_challenges_sde_accessibility:
+    challenger_role: UX
+    challenged_role: SDE
+    description: "UX challenges SDE on accessibility failures"
+    challenge_triggers:
+      - condition: "wcag_compliance_violation"
+        severity: [A, AA]
+      - condition: "accessibility_audit_failure"
+        threshold: "> 0"
+      - condition: "assistive_technology_incompatibility"
+        threshold: true
+    required_evidence:
+      - accessibility_audit_report
+      - wcag_failure_evidence
+      - user_feedback_from_accessible_community
+    resolution_sla_hours: 24
+    escalation_ladder:
+      - step: 1
+        action: "SDE fixes accessibility issues"
+        timeout_hours: 6
+      - step: 2
+        action: "Accessibility specialist review"
+        timeout_hours: 12
+      - step: 3
+        action: "UX Lead verification"
+        timeout_hours: 18
+      - step: 4
+        action: "Accessibility compliance sign-off"
+        timeout_hours: 24
+    human_in_loop: true
+    impact_if_unresolved: "legal_and_user_impact"
+    resolution_options:
+      - fix_accessibility_violations
+      - add_accessibility_features
+      - update_documentation
+      - provide_alternative_access_methods

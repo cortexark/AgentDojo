@@ -1,0 +1,485 @@
+version: "0.1.0"
+name: TaskPilot Orchestrator
+description: LangGraph-style state machine for TaskPilot orchestration
+
+# Core entities schema
+entities:
+  Role:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[active, inactive, deprecated]
+    metadata:
+      name: string
+      responsibilities: list[string]
+      escalation_authority: string
+
+  Skill:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[available, deprecated, beta]
+    metadata:
+      name: string
+      description: string
+      required_roles: list[string]
+      failure_modes: list[string]
+      dependencies: list[string]
+
+  Task:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[pending, in_progress, blocked, completed, failed]
+    metadata:
+      name: string
+      description: string
+      assigned_role: string
+      required_skills: list[string]
+      dependencies: list[string]
+      priority: enum[critical, high, medium, low]
+
+  Artifact:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[draft, review, approved, deprecated]
+    metadata:
+      name: string
+      artifact_type: string
+      owner_role: string
+      validation_rules: list[string]
+      dependencies: list[string]
+
+  Review:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[pending, in_progress, approved, rejected, escalated]
+    metadata:
+      artifact_id: string
+      reviewer_role: string
+      review_criteria: list[string]
+      feedback: string
+      resolution_required: boolean
+
+  Challenge:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[raised, acknowledged, under_review, resolved, escalated]
+    metadata:
+      challenger_role: string
+      challenged_role: string
+      challenge_type: string
+      evidence: list[string]
+      resolution_deadline: timestamp
+
+  Defect:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[open, acknowledged, in_progress, resolved, verified]
+    metadata:
+      severity: enum[critical, high, medium, low]
+      discovery_phase: string
+      root_cause: string
+      assigned_engineer: string
+      escape_rate_contribution: float
+
+  ChangeSet:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[proposed, in_progress, review, approved, committed, reverted]
+    metadata:
+      change_description: string
+      affected_components: list[string]
+      risk_level: enum[critical, high, medium, low]
+      requires_approval_roles: list[string]
+
+  TrainingEvent:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[scheduled, in_progress, completed, cancelled]
+    metadata:
+      event_type: string
+      participants: list[string]
+      topic: string
+      duration_minutes: integer
+      learning_objectives: list[string]
+
+  EvaluationRun:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[pending, in_progress, completed, failed]
+    metadata:
+      evaluation_type: string
+      evaluated_entity_id: string
+      metrics: dict
+      timestamp: timestamp
+
+  SimulationScenario:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[pending, running, completed, failed]
+    metadata:
+      scenario_name: string
+      injected_failures: list[string]
+      expected_outcomes: list[string]
+      kpi_targets: dict
+
+  RunLog:
+    id: string
+    created_at: timestamp
+    version: integer
+    parent_version: integer
+    status: enum[pending, in_progress, completed]
+    metadata:
+      run_id: string
+      phase: string
+      executed_skills: list[string]
+      artifacts_created: list[string]
+      defects_found: list[string]
+      challenges_raised: list[string]
+
+# State machine phases
+phases:
+  - name: Discovery
+    description: "Initial discovery and requirements gathering"
+    timeout_minutes: 480
+    checkpoint: true
+    human_in_loop: false
+    initial: true
+
+  - name: Validation
+    description: "Validate requirements and feasibility"
+    timeout_minutes: 360
+    checkpoint: true
+    human_in_loop: false
+    depends_on: [Discovery]
+
+  - name: Planning
+    description: "Create detailed execution plan"
+    timeout_minutes: 360
+    checkpoint: true
+    human_in_loop: true
+    depends_on: [Validation]
+    interrupt_for: [scope_changes, resource_constraints, risk_assessment]
+
+  - name: Design
+    description: "System and UI design"
+    timeout_minutes: 480
+    checkpoint: true
+    human_in_loop: true
+    depends_on: [Planning]
+    interrupt_for: [architecture_debt, accessibility_issues, performance_risks]
+
+  - name: Architecture
+    description: "Technical architecture and infrastructure"
+    timeout_minutes: 360
+    checkpoint: true
+    human_in_loop: false
+    depends_on: [Design]
+
+  - name: Build
+    description: "Implementation and development"
+    timeout_minutes: 1440
+    checkpoint: true
+    human_in_loop: false
+    depends_on: [Architecture]
+
+  - name: Quality
+    description: "Testing and quality assurance"
+    timeout_minutes: 720
+    checkpoint: true
+    human_in_loop: true
+    depends_on: [Build]
+    interrupt_for: [coverage_gaps, flaky_tests, escape_rate_threshold]
+
+  - name: Launch
+    description: "Deployment and launch"
+    timeout_minutes: 360
+    checkpoint: true
+    human_in_loop: false
+    depends_on: [Quality]
+
+  - name: Feedback
+    description: "Post-launch feedback and metrics"
+    timeout_minutes: 240
+    checkpoint: true
+    human_in_loop: false
+    depends_on: [Launch]
+
+# State transitions
+transitions:
+  - from: Discovery
+    to: Validation
+    condition: "discovery_artifacts_complete AND no_critical_gaps"
+
+  - from: Validation
+    to: Planning
+    condition: "requirements_validated AND feasibility_confirmed"
+
+  - from: Planning
+    to: Design
+    condition: "plan_approved AND resources_allocated"
+
+  - from: Design
+    to: Architecture
+    condition: "design_approved AND no_accessibility_debt"
+
+  - from: Architecture
+    to: Build
+    condition: "architecture_approved AND infrastructure_ready"
+
+  - from: Build
+    to: Quality
+    condition: "implementation_complete AND all_artifacts_present"
+
+  - from: Quality
+    to: Launch
+    condition: "test_coverage_threshold_met AND escape_rate_acceptable AND no_critical_defects"
+
+  - from: Launch
+    to: Feedback
+    condition: "deployment_successful AND no_critical_incidents"
+
+  - from: Feedback
+    to: Discovery
+    condition: "cycle_complete AND new_requirements_identified"
+
+  # Fallback transitions
+  - from: Planning
+    to: Discovery
+    condition: "critical_scope_change OR infeasibility_discovered"
+
+  - from: Design
+    to: Planning
+    condition: "architecture_debt_high OR performance_risk_critical"
+
+  - from: Quality
+    to: Build
+    condition: "escape_rate_exceeds_threshold OR coverage_insufficient"
+
+  - from: Quality
+    to: Design
+    condition: "usability_regression_detected OR accessibility_failure"
+
+# Dynamic skill selection rules
+skill_selection:
+  rules:
+    - condition: "phase == Discovery"
+      select_skills:
+        - skill: "requirements_elicitation"
+          priority: 1
+        - skill: "stakeholder_analysis"
+          priority: 2
+        - skill: "market_research"
+          priority: 3
+          conditional: "product_type == market_expansion"
+
+    - condition: "phase == Validation"
+      select_skills:
+        - skill: "technical_feasibility_assessment"
+          priority: 1
+        - skill: "risk_assessment"
+          priority: 2
+        - skill: "dependency_mapping"
+          priority: 3
+
+    - condition: "phase == Planning"
+      select_skills:
+        - skill: "project_scheduling"
+          priority: 1
+        - skill: "resource_allocation"
+          priority: 2
+        - skill: "stakeholder_communication"
+          priority: 3
+
+    - condition: "phase == Design"
+      select_skills:
+        - skill: "system_design"
+          priority: 1
+        - skill: "ui_ux_design"
+          priority: 2
+        - skill: "accessibility_review"
+          priority: 3
+
+    - condition: "phase == Architecture"
+      select_skills:
+        - skill: "infrastructure_design"
+          priority: 1
+        - skill: "api_design"
+          priority: 2
+        - skill: "security_architecture"
+          priority: 3
+
+    - condition: "phase == Build"
+      select_skills:
+        - skill: "code_implementation"
+          priority: 1
+        - skill: "code_review"
+          priority: 2
+        - skill: "documentation"
+          priority: 3
+
+    - condition: "phase == Quality"
+      select_skills:
+        - skill: "test_execution"
+          priority: 1
+        - skill: "test_coverage_analysis"
+          priority: 2
+        - skill: "performance_testing"
+          priority: 3
+        - skill: "security_testing"
+          priority: 4
+
+    - condition: "phase == Launch"
+      select_skills:
+        - skill: "deployment_execution"
+          priority: 1
+        - skill: "monitoring_setup"
+          priority: 2
+        - skill: "incident_response"
+          priority: 3
+
+    - condition: "phase == Feedback"
+      select_skills:
+        - skill: "metrics_collection"
+          priority: 1
+        - skill: "user_feedback_analysis"
+          priority: 2
+        - skill: "kpi_evaluation"
+          priority: 3
+
+  dynamic_conditions:
+    - factor: "risk_level == critical"
+      adjust: "add_skill: peer_review; add_skill: security_audit"
+
+    - factor: "open_defects > 10"
+      adjust: "add_skill: defect_root_cause_analysis; extend_phase_timeout: +50%"
+
+    - factor: "missing_artifacts > 0"
+      adjust: "add_skill: artifact_generation; block_phase_transition: false"
+
+    - factor: "regression_detected"
+      adjust: "add_skill: regression_analysis; revert_to_phase: Build"
+
+    - factor: "kpi_drift > 15%"
+      adjust: "add_skill: process_improvement; escalate_to: human_review"
+
+# Checkpoint definitions
+checkpoints:
+  discovery_complete:
+    phase: Discovery
+    conditions:
+      - all_requirements_documented: true
+      - stakeholder_approval: true
+      - initial_risk_assessment: true
+    artifacts_required:
+      - requirements_document
+      - stakeholder_matrix
+      - initial_risk_register
+
+  validation_complete:
+    phase: Validation
+    conditions:
+      - technical_feasibility_confirmed: true
+      - resource_constraints_identified: true
+      - dependencies_mapped: true
+    artifacts_required:
+      - feasibility_report
+      - dependency_map
+      - resource_plan
+
+  plan_approved:
+    phase: Planning
+    conditions:
+      - schedule_approved: true
+      - resources_committed: true
+      - risks_accepted: true
+    artifacts_required:
+      - project_schedule
+      - resource_allocation
+      - risk_mitigation_plan
+
+  design_approved:
+    phase: Design
+    conditions:
+      - system_design_approved: true
+      - ui_design_approved: true
+      - accessibility_compliant: true
+    artifacts_required:
+      - system_design_doc
+      - ui_mockups
+      - accessibility_report
+
+  architecture_ready:
+    phase: Architecture
+    conditions:
+      - infrastructure_provisioned: true
+      - api_contracts_defined: true
+      - security_measures_implemented: true
+    artifacts_required:
+      - architecture_diagram
+      - api_specification
+      - infrastructure_config
+
+  implementation_complete:
+    phase: Build
+    conditions:
+      - all_features_implemented: true
+      - code_review_passed: true
+      - documentation_complete: true
+    artifacts_required:
+      - source_code
+      - code_review_results
+      - technical_documentation
+
+  quality_passed:
+    phase: Quality
+    conditions:
+      - test_coverage_threshold_met: true
+      - defect_escape_rate_acceptable: true
+      - performance_targets_met: true
+    artifacts_required:
+      - test_report
+      - coverage_report
+      - performance_report
+
+  deployment_ready:
+    phase: Launch
+    conditions:
+      - deployment_checklist_complete: true
+      - monitoring_configured: true
+      - rollback_plan_ready: true
+    artifacts_required:
+      - deployment_plan
+      - monitoring_config
+      - runbook
+
+  cycle_complete:
+    phase: Feedback
+    conditions:
+      - metrics_collected: true
+      - user_feedback_reviewed: true
+      - post_mortem_completed: true
+    artifacts_required:
+      - metrics_report
+      - feedback_summary
+      - lessons_learned

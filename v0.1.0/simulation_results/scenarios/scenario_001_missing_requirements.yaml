@@ -1,0 +1,108 @@
+scenario_id: scenario_001
+name: "Missing Requirements Discovery"
+description: "Tests orchestrator's ability to handle discovery phase failures where critical requirements are missed and discovered later in development"
+
+injected_failures:
+  - failure_id: f001_missing_auth_requirements
+    type: missing_artifact
+    description: "Authentication and authorization requirements not documented"
+    discovery_phase: Build
+    actual_required_phase: Discovery
+    effort_to_remediate: 120
+
+  - failure_id: f002_missing_compliance_requirements
+    type: missing_artifact
+    description: "GDPR and data privacy requirements not captured"
+    discovery_phase: Quality
+    actual_required_phase: Design
+    effort_to_remediate: 160
+
+  - failure_id: f003_incomplete_api_contract
+    type: missing_artifact
+    description: "Third-party API integration requirements underspecified"
+    discovery_phase: Build
+    actual_required_phase: Planning
+    effort_to_remediate: 80
+
+affected_phases:
+  - Discovery
+  - Planning
+  - Design
+  - Build
+  - Quality
+  - Launch
+
+expected_outcomes:
+  - "Discovery phase completion checkpoint should not be reached without addressing all identified artifact gaps"
+  - "Missing requirements should trigger escalation to PM for stakeholder re-validation"
+  - "Discovery should be extended to ensure completeness"
+  - "Validation phase should verify presence of all required artifacts before proceeding"
+  - "If missed in Discovery, system should detect gap in Design or Build phase and trigger rollback"
+  - "Team should be alerted before Launch phase about undocumented requirements"
+
+failure_tags:
+  - "[FAIL:requirements:critical]"
+  - "[FAIL:planning:high]"
+  - "[FAIL:documentation:high]"
+  - "[FAIL:scope_management:critical]"
+
+kpi_impact:
+  artifact_correctness:
+    baseline: 0.95
+    expected_with_fix: 0.98
+    measurement: "Percentage of required artifacts present at phase checkpoints"
+
+  schedule_variance:
+    baseline: 0.05
+    expected_impact: 0.25
+    measurement: "Days of delay due to rework from missing requirements"
+
+  defect_escape_rate:
+    baseline: 0.02
+    expected_impact: 0.08
+    measurement: "Requirements-related defects escaping to production"
+
+  rework_cost:
+    baseline: 0.0
+    expected_impact: 120.0
+    measurement: "Engineering hours lost to rework"
+
+bug_taxonomy_category: "goal_drift"
+
+validation_checks:
+  - check_id: vc001
+    name: "Artifact Completeness"
+    phase: Discovery
+    condition: "all_required_artifacts_present"
+    expected_result: false
+
+  - check_id: vc002
+    name: "Requirements Validation"
+    phase: Validation
+    condition: "stakeholder_sign_off_obtained"
+    expected_result: false
+
+  - check_id: vc003
+    name: "Gap Detection"
+    phase: Planning
+    condition: "missing_requirements_identified"
+    expected_result: true
+
+  - check_id: vc004
+    name: "Escalation Triggered"
+    phase: Planning
+    condition: "pm_escalation_raised"
+    expected_result: true
+
+  - check_id: vc005
+    name: "Phase Rollback"
+    phase: Build
+    condition: "system_initiates_rollback_to_discovery"
+    expected_result: true
+
+metrics_to_track:
+  - artifact_presence_by_phase
+  - requirement_change_count
+  - rework_effort_hours
+  - escalation_count
+  - phase_duration_variance

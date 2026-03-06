@@ -1,0 +1,146 @@
+scenario_id: scenario_004
+name: "API Breaking Change and Compatibility Issues"
+description: "Tests orchestrator's ability to manage API changes, backward compatibility, and downstream system impacts"
+
+injected_failures:
+  - failure_id: f012_api_response_structure_change
+    type: breaking_change
+    description: "API response JSON structure changed, breaking client applications"
+    discovery_phase: Launch
+    actual_required_phase: Build
+    affected_systems: ["mobile_app", "web_client", "partner_integrations"]
+    backward_compatibility: false
+    effort_to_remediate: 120
+
+  - failure_id: f013_api_endpoint_removal
+    type: breaking_change
+    description: "Deprecated API endpoint removed without proper migration period"
+    discovery_phase: Launch
+    actual_required_phase: Planning
+    affected_systems: ["legacy_clients", "partner_systems"]
+    backward_compatibility: false
+    migration_customers_affected: 15
+    effort_to_remediate: 100
+
+  - failure_id: f014_rate_limit_change
+    type: breaking_change
+    description: "API rate limits reduced, impacting high-volume consumers"
+    discovery_phase: Feedback
+    actual_required_phase: Architecture
+    affected_systems: ["data_pipeline", "analytics_service"]
+    backward_compatibility: false
+    effort_to_remediate: 40
+
+  - failure_id: f015_authentication_flow_change
+    type: breaking_change
+    description: "OAuth flow changed, requiring client application updates"
+    discovery_phase: Launch
+    actual_required_phase: Design
+    affected_systems: ["all_clients"]
+    backward_compatibility: false
+    customer_impact: "critical"
+    effort_to_remediate: 80
+
+affected_phases:
+  - Design
+  - Build
+  - Quality
+  - Launch
+  - Feedback
+
+expected_outcomes:
+  - "API contract should be defined and frozen in Design phase"
+  - "Backward compatibility should be a design constraint"
+  - "SDE should challenge PM on breaking changes"
+  - "Impact analysis should identify all downstream systems"
+  - "Migration strategy should be defined before Build phase"
+  - "Customer communication plan should be prepared"
+  - "Launch should be blocked if breaking changes unmanaged"
+  - "Feedback phase should track customer impact"
+
+failure_tags:
+  - "[FAIL:api_design:critical]"
+  - "[FAIL:compatibility:critical]"
+  - "[FAIL:coordination:critical]"
+  - "[FAIL:customer_impact:critical]"
+
+kpi_impact:
+  api_stability:
+    baseline: 0.99
+    expected_impact: 0.30
+    measurement: "Percentage of API consumers unaffected by changes"
+
+  customer_support_load:
+    baseline: 100
+    expected_impact: 850
+    measurement: "Support tickets related to breaking changes"
+
+  integration_failure_rate:
+    baseline: 0.01
+    expected_impact: 0.35
+    measurement: "Percentage of client integrations broken"
+
+  customer_satisfaction:
+    baseline: 4.5
+    expected_impact: 2.1
+    measurement: "Customer satisfaction score post-launch"
+
+  remediation_cost:
+    baseline: 0.0
+    expected_impact: 300.0
+    measurement: "Engineering hours for fixes, rollback, customer support"
+
+bug_taxonomy_category: "coordination_deadlock"
+
+validation_checks:
+  - check_id: vc017
+    name: "API Contract Defined"
+    phase: Design
+    condition: "api_contract_finalized"
+    expected_result: false
+
+  - check_id: vc018
+    name: "Backward Compatibility Verified"
+    phase: Build
+    condition: "backward_compatibility_tested"
+    expected_result: false
+
+  - check_id: vc019
+    name: "Impact Analysis Complete"
+    phase: Planning
+    condition: "downstream_impact_documented"
+    expected_result: false
+
+  - check_id: vc020
+    name: "Breaking Changes Identified"
+    phase: Quality
+    condition: "breaking_changes_detected"
+    expected_result: true
+
+  - check_id: vc021
+    name: "SDE Challenge on Breaking Changes"
+    phase: Build
+    condition: "sde_challenge_raised"
+    expected_result: true
+
+  - check_id: vc022
+    name: "Launch Blocked"
+    phase: Launch
+    condition: "launch_blocked_unmanaged_changes"
+    expected_result: true
+
+  - check_id: vc023
+    name: "Customer Communication"
+    phase: Launch
+    condition: "customer_notification_sent"
+    expected_result: true
+
+metrics_to_track:
+  - breaking_changes_introduced
+  - backward_compatibility_score
+  - affected_downstream_systems
+  - migration_readiness
+  - customer_notification_timing
+  - support_ticket_volume
+  - customer_churn_impact
+  - api_adoption_rate_post_change

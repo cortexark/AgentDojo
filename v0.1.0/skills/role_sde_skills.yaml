@@ -1,0 +1,461 @@
+- skill_id: SKILL_SDE_TDD
+  role: ROLE_SDE
+  description: "Test-Driven Development: Red-Green-Refactor cycle for feature implementation"
+  prerequisites:
+    - "Requirements document exists in .sde/requirements/"
+    - "Architecture ADR approved"
+    - "Development environment configured and tested"
+  evidence_required:
+    - "Failing test created before implementation"
+    - "Test passes after implementation"
+    - "Refactoring applied without breaking tests"
+  artifacts_produced:
+    - ".sde/tests/{feature}.test.{ext}"
+    - ".sde/code/{feature}.{ext}"
+    - "test-execution-log.txt"
+  scoring_rubric:
+    - criterion: "Test Coverage"
+      weight: 0.3
+      scale: "0-10: 0=no tests, 5=60% coverage, 8=80% coverage, 10=95%+ coverage"
+    - criterion: "Red-Green-Refactor Discipline"
+      weight: 0.25
+      scale: "0-10: 0=no TDD, 5=partial, 10=strict R-G-R for every change"
+    - criterion: "Test Quality"
+      weight: 0.25
+      scale: "0-10: 0=trivial assertions, 5=happy path, 10=edge cases+negative+boundary"
+    - criterion: "Code Quality Post-Refactor"
+      weight: 0.2
+      scale: "0-10: 0=messy, 5=functional, 10=clean SOLID compliant"
+  anti_patterns:
+    - "Writing code before tests"
+    - "Testing implementation details instead of behavior"
+    - "Skipping refactor step"
+    - "Tests that always pass (no meaningful assertions)"
+    - "Incomplete test suite covering only happy path"
+  test_hooks:
+    - "Run test suite and verify coverage >= 80%"
+    - "Grep for TODO/FIXME in new code"
+    - "Check test file naming conventions"
+    - "Verify all tests pass: exit code 0"
+    - "Run linter on test code"
+  exit_criteria:
+    - "Test coverage >= 80% on new code"
+    - "All tests pass (zero failures)"
+    - "No TODO/FIXME/STUB in implementation code"
+    - "Code review requested with coverage report attached"
+    - "At least 3 negative/boundary test cases per feature"
+
+- skill_id: SKILL_SDE_CODE_REVIEW
+  role: ROLE_SDE
+  description: "Conduct thorough code reviews focusing on design, maintainability, and correctness"
+  prerequisites:
+    - "Pull request submitted with description"
+    - "CI pipeline passed (tests, linting)"
+    - "At least 50 lines of code changed"
+  evidence_required:
+    - "Line-by-line comments on changes"
+    - "Architecture and design feedback provided"
+    - "Security and performance considerations noted"
+  artifacts_produced:
+    - "code-review-checklist.md"
+    - "review-comments.txt"
+    - "improvement-suggestions.md"
+  scoring_rubric:
+    - criterion: "Thoroughness"
+      weight: 0.3
+      scale: "0-10: 0=superficial, 5=basic checks, 10=comprehensive analysis"
+    - criterion: "Constructiveness"
+      weight: 0.3
+      scale: "0-10: 0=harsh/unhelpful, 5=fair critique, 10=actionable guidance"
+    - criterion: "Design Understanding"
+      weight: 0.25
+      scale: "0-10: 0=surface level, 5=good grasp, 10=deep architecture insights"
+    - criterion: "Timeliness"
+      weight: 0.15
+      scale: "0-10: 0=>48hrs, 5=24hrs, 10=<12hrs response time"
+  anti_patterns:
+    - "Rubber stamp approvals without reading code"
+    - "Focusing only on style/naming conventions"
+    - "Giving vague feedback without explanations"
+    - "Ignoring test quality and coverage"
+    - "Missing security or performance implications"
+  test_hooks:
+    - "Verify review contains at least 5 distinct comments"
+    - "Check for security keywords: injection, auth, encrypt"
+    - "Verify coverage report examined"
+    - "Grep review text for actionable verbs"
+  exit_criteria:
+    - "Minimum 5 substantive comments on the PR"
+    - "At least one architectural or design consideration noted"
+    - "Code changes align with project style guide"
+    - "Test coverage meets project threshold"
+    - "Review completed within 24 hours"
+
+- skill_id: SKILL_SDE_SYSTEM_DESIGN
+  role: ROLE_SDE
+  description: "Design scalable system architecture for new services or major features"
+  prerequisites:
+    - "Functional and non-functional requirements documented"
+    - "Scale requirements and SLAs defined"
+    - "Technology stack constraints identified"
+  evidence_required:
+    - "Architecture diagram with components and interactions"
+    - "Data flow documentation"
+    - "Failure mode analysis completed"
+  artifacts_produced:
+    - ".sde/arch/{service}-architecture.md"
+    - "architecture-diagram.png"
+    - "system-design-adr.md"
+    - "capacity-planning.xlsx"
+  scoring_rubric:
+    - criterion: "Scalability"
+      weight: 0.25
+      scale: "0-10: 0=single-node only, 5=handles 10x growth, 10=auto-scales to 100x+"
+    - criterion: "Fault Tolerance"
+      weight: 0.25
+      scale: "0-10: 0=single point of failure, 5=some redundancy, 10=99.99% uptime design"
+    - criterion: "Technical Feasibility"
+      weight: 0.25
+      scale: "0-10: 0=impractical, 5=doable with effort, 10=leverages proven patterns"
+    - criterion: "Documentation Clarity"
+      weight: 0.25
+      scale: "0-10: 0=vague, 5=understandable, 10=crystal clear for onboarding"
+  anti_patterns:
+    - "Over-engineering for current needs"
+    - "Ignoring operational complexity"
+    - "Single point of failure in critical paths"
+    - "Technology choices driven by trends, not requirements"
+    - "Missing disaster recovery strategy"
+  test_hooks:
+    - "Verify architecture diagram contains all components"
+    - "Check SLA targets are explicitly mentioned"
+    - "Verify failure scenarios documented (3+ failure modes)"
+    - "Confirm load testing plan exists"
+  exit_criteria:
+    - "Architecture diagram complete with 5+ components"
+    - "SLA and capacity targets defined and justified"
+    - "Minimum 3 failure scenarios identified with mitigation"
+    - "Technology choices rationale documented"
+    - "Design review meeting completed with sign-off"
+
+- skill_id: SKILL_SDE_DEBUGGING
+  role: ROLE_SDE
+  description: "Systematically identify and fix bugs using structured debugging methodologies"
+  prerequisites:
+    - "Bug report with reproducible steps"
+    - "Development environment matches production"
+    - "Access to logs and monitoring data"
+  evidence_required:
+    - "Root cause analysis completed"
+    - "Bug fix implemented and tested"
+    - "Regression test case created"
+  artifacts_produced:
+    - "bug-analysis.md"
+    - ".sde/tests/regression/{bug-id}.test.{ext}"
+    - "root-cause-report.txt"
+  scoring_rubric:
+    - criterion: "Root Cause Identification"
+      weight: 0.3
+      scale: "0-10: 0=symptom treated, 5=direct cause, 10=underlying systemic cause"
+    - criterion: "Fix Quality"
+      weight: 0.3
+      scale: "0-10: 0=workaround, 5=correct, 10=elegant and preventive"
+    - criterion: "Regression Testing"
+      weight: 0.25
+      scale: "0-10: 0=no test, 5=simple test, 10=comprehensive test covering edge cases"
+    - criterion: "Debug Process Documentation"
+      weight: 0.15
+      scale: "0-10: 0=none, 5=basic steps, 10=detailed walkthrough for learning"
+  anti_patterns:
+    - "Treating symptoms instead of root cause"
+    - "Fixing one instance without finding all occurrences"
+    - "Adding bandaid fixes without understanding the issue"
+    - "Skipping regression tests"
+    - "No documentation of debugging methodology used"
+  test_hooks:
+    - "Verify regression test reproduces original bug"
+    - "Confirm fix passes all existing tests"
+    - "Check codebase for similar patterns/bugs"
+    - "Verify fix handles edge cases"
+  exit_criteria:
+    - "Root cause clearly documented in writing"
+    - "Fix tested with at least 3 test cases (happy path, boundary, edge)"
+    - "Regression test passes"
+    - "All existing tests still pass"
+    - "No similar bugs found in codebase"
+
+- skill_id: SKILL_SDE_DATA_SYSTEMS
+  role: ROLE_SDE
+  description: "Design and implement data storage, retrieval, and processing systems"
+  prerequisites:
+    - "Data requirements document exists"
+    - "Query patterns and access frequency defined"
+    - "Storage constraints and latency SLAs known"
+  evidence_required:
+    - "Database schema or data model created"
+    - "Indexing and partitioning strategy documented"
+    - "Data pipeline implementation completed"
+  artifacts_produced:
+    - ".sde/data/{entity}-schema.sql"
+    - "data-model-diagram.png"
+    - "query-optimization-report.md"
+  scoring_rubric:
+    - criterion: "Correctness"
+      weight: 0.3
+      scale: "0-10: 0=data loss, 5=works correctly, 10=ACID/eventual consistency guaranteed"
+    - criterion: "Performance"
+      weight: 0.3
+      scale: "0-10: 0=unusable slow, 5=acceptable, 10=sub-millisecond latency"
+    - criterion: "Scalability"
+      weight: 0.25
+      scale: "0-10: 0=single node, 5=handles 100GB, 10=petabyte scale"
+    - criterion: "Maintainability"
+      weight: 0.15
+      scale: "0-10: 0=proprietary, 5=standard tools, 10=well-documented, easy migration"
+  anti_patterns:
+    - "Premature database selection before profiling needs"
+    - "Ignoring indexing and query optimization"
+    - "No data backup and recovery strategy"
+    - "Mixing operational and analytical data"
+    - "Hard-coded table names and query strings"
+  test_hooks:
+    - "Verify schema supports all required queries"
+    - "Check index creation for hot queries"
+    - "Run load test with peak traffic pattern"
+    - "Confirm backup and restore procedure tested"
+  exit_criteria:
+    - "Schema defined with all required fields and constraints"
+    - "Index strategy documented with justification"
+    - "Queries perform within SLA (<100ms for reads)"
+    - "Data consistency approach clearly defined"
+    - "Backup and recovery tested (restore time < 1 hour)"
+
+- skill_id: SKILL_SDE_REQUIREMENTS
+  role: ROLE_SDE
+  description: "Analyze and translate business requirements into technical specifications"
+  prerequisites:
+    - "Business requirements document from stakeholders"
+    - "User stories or use cases documented"
+    - "Acceptance criteria defined"
+  evidence_required:
+    - "Technical specification document written"
+    - "Ambiguities and edge cases identified"
+    - "Implementation plan with effort estimates created"
+  artifacts_produced:
+    - ".sde/requirements/{feature}-spec.md"
+    - "implementation-plan.md"
+    - "effort-estimate.xlsx"
+  scoring_rubric:
+    - criterion: "Completeness"
+      weight: 0.3
+      scale: "0-10: 0=missing major elements, 5=covers main scenarios, 10=all cases documented"
+    - criterion: "Clarity"
+      weight: 0.3
+      scale: "0-10: 0=ambiguous, 5=understandable, 10=unambiguous, precise"
+    - criterion: "Feasibility Analysis"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=considered, 10=detailed with trade-offs"
+    - criterion: "Effort Accuracy"
+      weight: 0.15
+      scale: "0-10: 0=wildly off, 5=ballpark estimate, 10=story-level breakdown"
+  anti_patterns:
+    - "Copying requirements without analysis"
+    - "Missing edge cases and error scenarios"
+    - "Over-committing to unrealistic timelines"
+    - "Ignoring non-functional requirements"
+    - "Not validating understanding with stakeholders"
+  test_hooks:
+    - "Verify all acceptance criteria mapped to spec"
+    - "Check for undefined terms or ambiguities"
+    - "Confirm effort estimates reviewed by 2 engineers"
+    - "Validate with PM or stakeholder via comment"
+  exit_criteria:
+    - "All acceptance criteria translated to technical specs"
+    - "At least 3 edge cases identified and documented"
+    - "Non-functional requirements (performance, scale) specified"
+    - "Implementation effort estimated at story/task level"
+    - "Specification reviewed and approved by tech lead"
+
+- skill_id: SKILL_SDE_SYSTEMS_THINKING
+  role: ROLE_SDE
+  description: "Analyze complex systems and identify interactions, bottlenecks, and optimization opportunities"
+  prerequisites:
+    - "System architecture documented"
+    - "Performance metrics and monitoring data available"
+    - "Business context and constraints understood"
+  evidence_required:
+    - "System analysis report with findings"
+    - "Bottleneck identification and quantification"
+    - "Optimization proposals with trade-off analysis"
+  artifacts_produced:
+    - "systems-analysis.md"
+    - "bottleneck-report.txt"
+    - "optimization-roadmap.md"
+  scoring_rubric:
+    - criterion: "Holistic Understanding"
+      weight: 0.3
+      scale: "0-10: 0=siloed view, 5=understands main interactions, 10=sees end-to-end flow"
+    - criterion: "Problem Identification"
+      weight: 0.3
+      scale: "0-10: 0=misses issues, 5=identifies major bottlenecks, 10=catches subtle inefficiencies"
+    - criterion: "Solution Quality"
+      weight: 0.25
+      scale: "0-10: 0=impractical, 5=workable, 10=elegant with measurable impact"
+    - criterion: "Trade-off Analysis"
+      weight: 0.15
+      scale: "0-10: 0=none, 5=basic, 10=detailed cost/benefit comparison"
+  anti_patterns:
+    - "Optimizing sub-systems without considering system impact"
+    - "Local optimizations that create global bottlenecks"
+    - "Ignoring human factors and operational complexity"
+    - "Premature optimization based on assumptions"
+    - "Missing second and third-order effects"
+  test_hooks:
+    - "Verify analysis covers 5+ system components"
+    - "Check that proposals are quantified with metrics"
+    - "Confirm assumptions stated and validated"
+    - "Review trade-offs for each proposal"
+  exit_criteria:
+    - "System components and interactions mapped"
+    - "At least 3 bottlenecks identified with metrics"
+    - "Optimization proposals prioritized by impact"
+    - "Trade-offs and risks documented for each proposal"
+    - "Roadmap includes implementation sequence and success metrics"
+
+- skill_id: SKILL_SDE_ML_DESIGN
+  role: ROLE_SDE
+  description: "Design machine learning systems including data pipelines, model architecture, and inference"
+  prerequisites:
+    - "Business problem and success metrics defined"
+    - "Data availability and quality assessed"
+    - "ML feasibility validated"
+  evidence_required:
+    - "ML pipeline architecture designed"
+    - "Data processing and feature engineering plan documented"
+    - "Model selection and training strategy defined"
+  artifacts_produced:
+    - ".sde/ml/{model}-architecture.md"
+    - "data-pipeline.png"
+    - "model-training-plan.md"
+    - "inference-deployment-spec.md"
+  scoring_rubric:
+    - criterion: "Problem Formulation"
+      weight: 0.25
+      scale: "0-10: 0=vague, 5=clear ML objective, 10=well-defined with metrics"
+    - criterion: "Data Strategy"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=basic plan, 10=comprehensive pipeline with validation"
+    - criterion: "Model Approach"
+      weight: 0.25
+      scale: "0-10: 0=no justification, 5=reasonable choice, 10=optimal for constraints"
+    - criterion: "Operationalization"
+      weight: 0.25
+      scale: "0-10: 0=not considered, 5=basic deployment, 10=monitoring+retraining plan"
+  anti_patterns:
+    - "Choosing complex models without baseline"
+    - "Ignoring data quality and biases"
+    - "No plan for model drift detection"
+    - "Treating ML as black box without interpretability"
+    - "Missing feature engineering documentation"
+  test_hooks:
+    - "Verify baseline model defined"
+    - "Check data validation and quality checks documented"
+    - "Confirm model monitoring/retraining triggers specified"
+    - "Validate inference latency requirements met"
+  exit_criteria:
+    - "ML problem clearly formulated with success metrics"
+    - "Data pipeline designed with 3+ processing stages"
+    - "At least 3 model approaches evaluated with trade-offs"
+    - "Model monitoring and retraining strategy documented"
+    - "Inference latency and resource requirements specified"
+
+- skill_id: SKILL_SDE_ARCHITECTURE_ADR
+  role: ROLE_SDE
+  description: "Create Architecture Decision Records documenting major technical decisions and trade-offs"
+  prerequisites:
+    - "Technical decision point identified"
+    - "Alternatives and options researched"
+    - "Stakeholders identified for review"
+  evidence_required:
+    - "ADR document with status, context, decision, and consequences"
+    - "Trade-off analysis between alternatives"
+    - "Team review and approval obtained"
+  artifacts_produced:
+    - ".sde/adr/{sequence}-{title}.md"
+    - "decision-matrix.xlsx"
+  scoring_rubric:
+    - criterion: "Clarity"
+      weight: 0.3
+      scale: "0-10: 0=unclear, 5=understandable, 10=crystal clear decision"
+    - criterion: "Completeness"
+      weight: 0.3
+      scale: "0-10: 0=incomplete, 5=covers main points, 10=all alternatives with trade-offs"
+    - criterion: "Rationale Quality"
+      weight: 0.25
+      scale: "0-10: 0=arbitrary, 5=reasonable, 10=well-justified with metrics"
+    - criterion: "Consequences Depth"
+      weight: 0.15
+      scale: "0-10: 0=surface level, 5=main impacts noted, 10=full impact analysis"
+  anti_patterns:
+    - "ADRs created after decision already made and locked in"
+    - "Missing trade-off analysis"
+    - "Vague or unenumerated alternatives"
+    - "No discussion of consequences and risks"
+    - "Decisions made by individuals without team input"
+  test_hooks:
+    - "Verify all alternatives evaluated"
+    - "Check that decision is justified by trade-off analysis"
+    - "Confirm consequences are concrete and measurable"
+    - "Validate at least 2 stakeholder reviews"
+  exit_criteria:
+    - "ADR follows standard format with status, context, decision, consequences"
+    - "Minimum 3 alternatives evaluated in decision matrix"
+    - "Trade-offs quantified (cost, complexity, performance, etc.)"
+    - "Consequences and risks clearly articulated"
+    - "ADR approved by tech lead and relevant stakeholders"
+
+- skill_id: SKILL_SDE_CRAFTMANSHIP
+  role: ROLE_SDE
+  description: "Write clean, maintainable code following SOLID principles and best practices"
+  prerequisites:
+    - "Feature requirements and design approved"
+    - "Code style guide and standards available"
+    - "Development environment configured"
+  evidence_required:
+    - "Code written with consistent style and structure"
+    - "Naming conventions applied consistently"
+    - "Duplicated code identified and refactored"
+  artifacts_produced:
+    - ".sde/code/{module}.{ext}"
+    - "refactoring-log.md"
+    - "code-metrics-report.txt"
+  scoring_rubric:
+    - criterion: "Code Readability"
+      weight: 0.3
+      scale: "0-10: 0=cryptic, 5=understandable, 10=self-documenting"
+    - criterion: "SOLID Principles"
+      weight: 0.25
+      scale: "0-10: 0=violated, 5=mostly applied, 10=exemplary adherence"
+    - criterion: "DRY & Abstraction"
+      weight: 0.25
+      scale: "0-10: 0=significant duplication, 5=minimal duplication, 10=proper abstractions"
+    - criterion: "Testability"
+      weight: 0.2
+      scale: "0-10: 0=hard to test, 5=testable, 10=designed for testing"
+  anti_patterns:
+    - "God classes with too many responsibilities"
+    - "Long functions lacking cohesion"
+    - "Duplicate code across modules"
+    - "Magic numbers and hardcoded values"
+    - "Poor naming conventions"
+  test_hooks:
+    - "Run linter and fix all violations"
+    - "Measure cyclomatic complexity (max 10 per function)"
+    - "Check DRY violations with duplication detector"
+    - "Verify naming follows conventions"
+  exit_criteria:
+    - "Zero linter violations"
+    - "Functions average < 20 lines of code"
+    - "Cyclomatic complexity < 10 for all functions"
+    - "No duplicated code blocks (DRY principle)"
+    - "Consistent naming conventions throughout (camelCase, snake_case, etc.)"

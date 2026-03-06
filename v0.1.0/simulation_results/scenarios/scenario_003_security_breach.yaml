@@ -1,0 +1,142 @@
+scenario_id: scenario_003
+name: "Security Vulnerability Discovery"
+description: "Tests orchestrator's ability to handle critical security vulnerabilities discovered late in the development cycle"
+
+injected_failures:
+  - failure_id: f008_sql_injection_vulnerability
+    type: critical_defect
+    severity: critical
+    description: "SQL injection vulnerability discovered in user authentication module"
+    discovery_phase: Quality
+    actual_required_phase: Design
+    exploitability: "remote, unauthenticated"
+    affected_components: ["auth_module", "user_service"]
+    effort_to_remediate: 80
+
+  - failure_id: f009_sensitive_data_exposure
+    type: critical_defect
+    severity: critical
+    description: "API response includes sensitive user data in plain text"
+    discovery_phase: Quality
+    actual_required_phase: Build
+    exploitability: "remote, unauthenticated"
+    affected_components: ["api_gateway", "user_profile_service"]
+    effort_to_remediate: 40
+
+  - failure_id: f010_insufficient_input_validation
+    type: high_defect
+    severity: high
+    description: "Missing input validation allows XSS attacks"
+    discovery_phase: Quality
+    actual_required_phase: Design
+    exploitability: "remote, user-triggered"
+    affected_components: ["frontend", "form_handler"]
+    effort_to_remediate: 60
+
+  - failure_id: f011_weak_authentication
+    type: high_defect
+    severity: high
+    description: "Password complexity requirements below security standards"
+    discovery_phase: Launch
+    actual_required_phase: Design
+    exploitability: "credential compromise"
+    affected_components: ["auth_module"]
+    effort_to_remediate: 30
+
+affected_phases:
+  - Design
+  - Build
+  - Quality
+  - Launch
+  - Feedback
+
+expected_outcomes:
+  - "Security architecture review should be required in Design phase"
+  - "Security testing should be prioritized in Quality phase"
+  - "Discovery of critical vulnerability should trigger immediate escalation"
+  - "System should block Launch phase if critical vulnerabilities present"
+  - "SDE should be challenged on security practices if vulnerabilities found"
+  - "Root cause should trace back to missing security requirements or incomplete threat modeling"
+  - "Security remediation should be prioritized above feature work"
+  - "Post-incident review should improve security architecture reviews"
+
+failure_tags:
+  - "[FAIL:security:critical]"
+  - "[FAIL:design:critical]"
+  - "[FAIL:quality:critical]"
+  - "[FAIL:compliance:critical]"
+
+kpi_impact:
+  security_defect_escape_rate:
+    baseline: 0.01
+    expected_impact: 0.08
+    measurement: "Security defects reaching production"
+
+  schedule_variance:
+    baseline: 0.05
+    expected_impact: 0.40
+    measurement: "Days of delay for security remediation"
+
+  customer_trust_impact:
+    baseline: 1.0
+    expected_impact: 0.6
+    measurement: "Relative customer trust score after incident"
+
+  remediation_cost:
+    baseline: 0.0
+    expected_impact: 200.0
+    measurement: "Engineering hours for security fixes and incident response"
+
+  incident_response_time:
+    baseline: null
+    expected_impact: 4.0
+    measurement: "Hours to detect and respond to vulnerability"
+
+bug_taxonomy_category: "tool_misuse"
+
+validation_checks:
+  - check_id: vc011
+    name: "Security Architecture Review"
+    phase: Design
+    condition: "security_review_completed"
+    expected_result: false
+
+  - check_id: vc012
+    name: "Security Testing Executed"
+    phase: Quality
+    condition: "security_testing_comprehensive"
+    expected_result: false
+
+  - check_id: vc013
+    name: "Critical Vulnerability Detection"
+    phase: Quality
+    condition: "critical_vulnerabilities_found"
+    expected_result: true
+
+  - check_id: vc014
+    name: "Escalation to Security"
+    phase: Quality
+    condition: "security_team_escalation"
+    expected_result: true
+
+  - check_id: vc015
+    name: "Launch Blocked"
+    phase: Launch
+    condition: "launch_blocked_for_security"
+    expected_result: true
+
+  - check_id: vc016
+    name: "Remediation Verified"
+    phase: Quality
+    condition: "security_fixes_verified"
+    expected_result: false
+
+metrics_to_track:
+  - security_vulnerabilities_by_severity
+  - security_defect_escape_rate
+  - time_to_detect_vulnerability
+  - time_to_remediate
+  - security_testing_coverage
+  - threat_model_completeness
+  - escalation_speed
+  - incident_impact_scope

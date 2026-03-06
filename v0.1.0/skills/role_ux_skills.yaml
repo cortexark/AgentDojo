@@ -1,0 +1,459 @@
+- skill_id: SKILL_UX_DESIGN_SYSTEM
+  role: ROLE_UX
+  description: "Create and maintain a comprehensive design system with components and guidelines"
+  prerequisites:
+    - "Design language and brand established"
+    - "Component inventory conducted"
+    - "Design tools and documentation platform available"
+  evidence_required:
+    - "Design system documentation created"
+    - "Reusable components built and catalogued"
+    - "Usage guidelines and patterns documented"
+  artifacts_produced:
+    - ".ux/design-system/components.md"
+    - ".ux/design-system/guidelines.md"
+    - "design-system-website.html"
+  scoring_rubric:
+    - criterion: "Component Coverage"
+      weight: 0.3
+      scale: "0-10: 0=few components, 5=good coverage, 10=comprehensive"
+    - criterion: "Documentation Quality"
+      weight: 0.3
+      scale: "0-10: 0=minimal, 5=good docs, 10=detailed with examples"
+    - criterion: "Consistency"
+      weight: 0.25
+      scale: "0-10: 0=variable, 5=mostly consistent, 10=strict consistency"
+    - criterion: "Adoption"
+      weight: 0.15
+      scale: "0-10: 0=ignored, 5=partial use, 10=widely adopted"
+  anti_patterns:
+    - "Design system created without designer and engineer buy-in"
+    - "Components that are too rigid or too flexible"
+    - "Documentation that is outdated or incomplete"
+    - "Design system that doesn't solve actual problems"
+    - "No maintenance process or version control"
+  test_hooks:
+    - "Verify component library has 20+ components"
+    - "Check documentation includes examples and usage"
+    - "Confirm design and code components are in sync"
+    - "Validate adoption tracking metrics"
+  exit_criteria:
+    - "Design system documentation covers 20+ components"
+    - "Each component has design specs, code, and usage guidelines"
+    - "Design tokens documented (colors, spacing, typography, etc.)"
+    - "Design system adopted by 3+ products"
+    - "Design system governance and update process established"
+
+- skill_id: SKILL_UX_VISUAL_HIERARCHY
+  role: ROLE_UX
+  description: "Establish visual hierarchy to guide user attention and understanding"
+  prerequisites:
+    - "User flows and content structure mapped"
+    - "Wireframes or mockups created"
+    - "Design principles agreed upon"
+  evidence_required:
+    - "Visual hierarchy applied to designs"
+    - "User testing validates hierarchy effectiveness"
+    - "Implementation follows visual hierarchy"
+  artifacts_produced:
+    - ".ux/hierarchy/{screen}-visual-hierarchy.md"
+    - "hierarchy-analysis.txt"
+    - "implementation-checklist.md"
+  scoring_rubric:
+    - criterion: "Clarity"
+      weight: 0.3
+      scale: "0-10: 0=confusing, 5=clear, 10=obvious primary/secondary"
+    - criterion: "Content Prioritization"
+      weight: 0.3
+      scale: "0-10: 0=wrong, 5=reasonable, 10=optimal for user goals"
+    - criterion: "Visual Consistency"
+      weight: 0.25
+      scale: "0-10: 0=inconsistent, 5=mostly consistent, 10=systematic"
+    - criterion: "User Testing Validation"
+      weight: 0.15
+      scale: "0-10: 0=untested, 5=some validation, 10=validated with users"
+  anti_patterns:
+    - "Equal visual weight on all elements"
+    - "Hierarchy that contradicts user mental models"
+    - "Too many levels of hierarchy (>5)"
+    - "Hierarchy not maintained across different breakpoints"
+    - "Visual hierarchy changes based on preference, not task"
+  test_hooks:
+    - "Verify primary action is visually dominant"
+    - "Check 3-5 levels of hierarchy maximum"
+    - "Confirm hierarchy consistent across components"
+    - "Validate user testing supports hierarchy"
+  exit_criteria:
+    - "Visual hierarchy clearly defined for primary screens (5+)"
+    - "Primary action visually dominant (size, color, position)"
+    - "Secondary and tertiary content appropriately de-emphasized"
+    - "User testing validates hierarchy guides attention correctly"
+    - "Design system enforces hierarchy through component design"
+
+- skill_id: SKILL_UX_TYPOGRAPHY
+  role: ROLE_UX
+  description: "Design and implement typography system for readability and visual hierarchy"
+  prerequisites:
+    - "Font selection completed"
+    - "Content and readability requirements known"
+    - "Scale and hierarchy needs defined"
+  evidence_required:
+    - "Typography system documented with scales"
+    - "Font pairing selections justified"
+    - "Readability validated across devices"
+  artifacts_produced:
+    - ".ux/typography/type-system.md"
+    - "font-scale-specification.txt"
+    - "readability-testing-results.md"
+  scoring_rubric:
+    - criterion: "Scale Consistency"
+      weight: 0.3
+      scale: "0-10: 0=inconsistent, 5=reasonable scale, 10=modular scale"
+    - criterion: "Readability"
+      weight: 0.3
+      scale: "0-10: 0=hard to read, 5=readable, 10=optimal readability"
+    - criterion: "Visual Hierarchy"
+      weight: 0.25
+      scale: "0-10: 0=unclear, 5=clear levels, 10=distinct hierarchy"
+    - criterion: "Implementation"
+      weight: 0.15
+      scale: "0-10: 0=manual, 5=mostly automated, 10=fully automated"
+  anti_patterns:
+    - "Too many font weights or sizes"
+    - "Font size too small for body text (< 16px)"
+    - "Line height too tight or too loose"
+    - "Poor contrast for accessibility"
+    - "Fonts that don't work at small sizes"
+  test_hooks:
+    - "Verify font scales are modular (based on ratio)"
+    - "Check readability at smallest size (mobile)"
+    - "Confirm WCAG contrast requirements met"
+    - "Validate hierarchy is visually clear"
+  exit_criteria:
+    - "Typography system defined with 5-8 scale levels"
+    - "Font pairings justified and tested"
+    - "Line height, letter-spacing optimized for readability"
+    - "WCAG AAA contrast ratios met for body text"
+    - "Typography system integrated into design system and code"
+
+- skill_id: SKILL_UX_COLOR_SYSTEM
+  role: ROLE_UX
+  description: "Design color system that is accessible, functional, and brand-aligned"
+  prerequisites:
+    - "Brand guidelines and color preferences established"
+    - "Use cases and accessibility requirements known"
+    - "Color management tools available"
+  evidence_required:
+    - "Color palette defined with semantic meanings"
+    - "Contrast ratios verified for accessibility"
+    - "Color usage guidelines documented"
+  artifacts_produced:
+    - ".ux/colors/color-palette.md"
+    - "color-contrast-matrix.xlsx"
+    - "color-usage-guidelines.md"
+  scoring_rubric:
+    - criterion: "Palette Completeness"
+      weight: 0.3
+      scale: "0-10: 0=limited, 5=good coverage, 10=comprehensive"
+    - criterion: "Accessibility"
+      weight: 0.3
+      scale: "0-10: 0=poor, 5=partial, 10=WCAG AAA compliant"
+    - criterion: "Semantic Clarity"
+      weight: 0.25
+      scale: "0-10: 0=unclear, 5=reasonable, 10=obvious intent"
+    - criterion: "Brand Alignment"
+      weight: 0.15
+      scale: "0-10: 0=misaligned, 5=related, 10=perfect fit"
+  anti_patterns:
+    - "Color conveying meaning to color-blind users only"
+    - "Insufficient contrast for text (< 4.5:1 for normal text)"
+    - "Too many colors without semantic meaning"
+    - "Colors that conflict with brand identity"
+    - "Color system that doesn't handle dark mode"
+  test_hooks:
+    - "Verify contrast ratios > 4.5:1 for WCAG AA"
+    - "Check colors tested with accessibility simulator"
+    - "Confirm semantic meanings for colors documented"
+    - "Validate color system works in light and dark modes"
+  exit_criteria:
+    - "Color palette defined with 10+ colors across hues"
+    - "All color combinations tested for WCAG AAA compliance"
+    - "Semantic meanings for status colors (success, error, warning, info)"
+    - "Color usage guidelines for different contexts documented"
+    - "Color system integrated into design tokens and CSS"
+
+- skill_id: SKILL_UX_COMPONENT_DESIGN
+  role: ROLE_UX
+  description: "Design reusable UI components for consistency and scalability"
+  prerequisites:
+    - "Design system or component guidelines available"
+    - "Component inventory conducted"
+    - "Use cases and requirements mapped"
+  evidence_required:
+    - "Component designs documented with variations"
+    - "Interaction patterns defined"
+    - "Code implementation guides provided"
+  artifacts_produced:
+    - ".ux/components/{component}-design.md"
+    - ".ux/components/{component}-variations.sketch"
+    - "component-implementation-guide.md"
+  scoring_rubric:
+    - criterion: "Design Quality"
+      weight: 0.3
+      scale: "0-10: 0=poor, 5=good, 10=excellent"
+    - criterion: "Reusability"
+      weight: 0.3
+      scale: "0-10: 0=single use, 5=some reuse, 10=highly reusable"
+    - criterion: "Documentation"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=basic, 10=comprehensive with edge cases"
+    - criterion: "Accessibility"
+      weight: 0.15
+      scale: "0-10: 0=inaccessible, 5=basic, 10=fully accessible"
+  anti_patterns:
+    - "One-off components instead of patterns"
+    - "Designs that are hard to hand off to engineering"
+    - "Missing accessibility considerations"
+    - "Components that don't work across breakpoints"
+    - "Insufficient documentation for implementation"
+  test_hooks:
+    - "Verify component is used in 3+ places"
+    - "Check variations documented (states, sizes, etc.)"
+    - "Confirm accessibility specs included"
+    - "Validate implementation guide is clear"
+  exit_criteria:
+    - "10+ components designed with all variations"
+    - "Each component includes active/focus/disabled states"
+    - "Implementation guide provided for developers"
+    - "Accessibility requirements (ARIA, keyboard) documented"
+    - "Component variations tested across breakpoints"
+
+- skill_id: SKILL_UX_LANDING_PAGE
+  role: ROLE_UX
+  description: "Design high-converting landing pages that clearly communicate value"
+  prerequisites:
+    - "Target audience and value proposition defined"
+    - "Business goals and conversion metrics set"
+    - "Competitive landscape analyzed"
+  evidence_required:
+    - "Landing page design with clear CTA"
+    - "Value proposition messaging tested"
+    - "A/B tests or user feedback validating design"
+  artifacts_produced:
+    - ".ux/pages/{campaign}-landing-page.design"
+    - "value-proposition-testing-results.md"
+    - "conversion-optimization-report.txt"
+  scoring_rubric:
+    - criterion: "Value Communication"
+      weight: 0.3
+      scale: "0-10: 0=unclear, 5=clear, 10=compelling"
+    - criterion: "CTA Effectiveness"
+      weight: 0.25
+      scale: "0-10: 0=buried, 5=visible, 10=dominant and clear"
+    - criterion: "Visual Design"
+      weight: 0.25
+      scale: "0-10: 0=poor, 5=good, 10=excellent"
+    - criterion: "Conversion Optimization"
+      weight: 0.2
+      scale: "0-10: 0=not tested, 5=basic, 10=A/B tested and optimized"
+  anti_patterns:
+    - "Too much text without clear value prop"
+    - "CTA not visible above the fold"
+    - "Distracting elements that pull away from CTA"
+    - "Messaging that doesn't match audience"
+    - "No clear next step after conversion"
+  test_hooks:
+    - "Verify value proposition is clear in first 2 seconds"
+    - "Check CTA is visually dominant"
+    - "Confirm A/B test results available"
+    - "Validate mobile experience optimized"
+  exit_criteria:
+    - "Landing page design communicates value proposition clearly"
+    - "Primary CTA is visually dominant with clear label"
+    - "A/B tests conducted on headlines, CTAs, or imagery"
+    - "Mobile responsiveness verified and optimized"
+    - "Conversion metrics baseline established and tracked"
+
+- skill_id: SKILL_UX_INTERACTION_DESIGN
+  role: ROLE_UX
+  description: "Design interactions and micro-interactions that delight and guide users"
+  prerequisites:
+    - "User flows and task flows documented"
+    - "Design components and patterns available"
+    - "Animation/interaction library available"
+  evidence_required:
+    - "Interaction flows designed and documented"
+    - "Micro-interactions defined (feedback, transitions)"
+    - "Prototypes or motion specs created"
+  artifacts_produced:
+    - ".ux/interactions/{flow}-interaction-design.md"
+    - ".ux/interactions/motion-spec.txt"
+    - "prototype.figma"
+  scoring_rubric:
+    - criterion: "User Goal Alignment"
+      weight: 0.3
+      scale: "0-10: 0=wrong, 5=aligned, 10=perfectly supports task"
+    - criterion: "Delight Factor"
+      weight: 0.25
+      scale: "0-10: 0=boring, 5=pleasant, 10=delightful"
+    - criterion: "Performance Awareness"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=considered, 10=optimized"
+    - criterion: "Implementation Feasibility"
+      weight: 0.2
+      scale: "0-10: 0=impossible, 5=challenging, 10=straightforward"
+  anti_patterns:
+    - "Interactions that don't provide feedback"
+    - "Animations that feel sluggish or unresponsive"
+    - "Flashy interactions that distract from task"
+    - "Inconsistent interaction patterns"
+    - "No consideration for motion sensitivity"
+  test_hooks:
+    - "Verify interactions support user goal"
+    - "Check motion spec includes timing and easing"
+    - "Confirm accessibility (prefers-reduced-motion) considered"
+    - "Validate interactions tested with users"
+  exit_criteria:
+    - "Interaction design for 5+ key user flows documented"
+    - "Micro-interactions defined for feedback (success, error, loading)"
+    - "Motion specs include timing, easing, and principles"
+    - "Accessibility considerations for motion included"
+    - "Prototype or animated mockup demonstrates interactions"
+
+- skill_id: SKILL_UX_RESPONSIVE_DESIGN
+  role: ROLE_UX
+  description: "Design responsive experiences that work seamlessly across all breakpoints"
+  prerequisites:
+    - "Target devices and breakpoints identified"
+    - "Content and functionality prioritized per breakpoint"
+    - "Responsive design framework available"
+  evidence_required:
+    - "Responsive designs created for key breakpoints"
+    - "Mobile-first approach documented"
+    - "Touch interaction considerations included"
+  artifacts_produced:
+    - ".ux/responsive/{screen}-responsive-design.md"
+    - "breakpoint-specifications.txt"
+    - "mobile-interaction-guide.md"
+  scoring_rubric:
+    - criterion: "Breakpoint Coverage"
+      weight: 0.25
+      scale: "0-10: 0=few, 5=main breakpoints, 10=comprehensive"
+    - criterion: "Mobile Experience"
+      weight: 0.3
+      scale: "0-10: 0=poor, 5=usable, 10=optimized"
+    - criterion: "Touch Optimization"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=basic, 10=comprehensive touch targets"
+    - criterion: "Performance"
+      weight: 0.2
+      scale: "0-10: 0=slow, 5=acceptable, 10=fast loading"
+  anti_patterns:
+    - "Shrinking desktop design instead of rethinking mobile"
+    - "Touch targets too small (< 44x44px recommended)"
+    - "Ignoring different input methods (touch vs mouse)"
+    - "Performance degradation on mobile"
+    - "Complex patterns that don't work on small screens"
+  test_hooks:
+    - "Verify designs for 4+ breakpoints (mobile, tablet, desktop, wide)"
+    - "Check touch targets are 44x44px minimum"
+    - "Confirm mobile performance optimized (Core Web Vitals)"
+    - "Validate portrait and landscape orientations"
+  exit_criteria:
+    - "Responsive designs for 4+ breakpoints documented"
+    - "Mobile-first design approach applied"
+    - "Touch targets optimized (44x44px minimum)"
+    - "Performance metrics meet targets (LCP, FID, CLS)"
+    - "Responsive design tested across real devices"
+
+- skill_id: SKILL_UX_ACCESSIBILITY
+  role: ROLE_UX
+  description: "Design accessible experiences that work for all users including those with disabilities"
+  prerequisites:
+    - "Accessibility requirements and WCAG level defined"
+    - "User needs of people with disabilities understood"
+    - "Accessibility testing tools available"
+  evidence_required:
+    - "Accessibility audit completed"
+    - "Designs meet accessibility standards"
+    - "Accessible implementation guidance provided"
+  artifacts_produced:
+    - ".ux/accessibility/accessibility-audit.md"
+    - "wcag-compliance-checklist.txt"
+    - "accessible-implementation-guide.md"
+  scoring_rubric:
+    - criterion: "WCAG Compliance"
+      weight: 0.3
+      scale: "0-10: 0=fails, 5=AA, 10=AAA compliance"
+    - criterion: "Testing Depth"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=basic, 10=comprehensive"
+    - criterion: "User Testing"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=limited, 10=tested with disabled users"
+    - criterion: "Design Quality"
+      weight: 0.2
+      scale: "0-10: 0=poor, 5=functional, 10=excellent"
+  anti_patterns:
+    - "Accessibility treated as afterthought"
+    - "ARIA used incorrectly (too much or wrong tags)"
+    - "Relying on color alone to convey meaning"
+    - "No keyboard navigation support"
+    - "Poor focus management"
+  test_hooks:
+    - "Run automated accessibility scanner (Axe, WAVE)"
+    - "Test keyboard navigation"
+    - "Check color contrast ratios"
+    - "Verify ARIA usage correct"
+  exit_criteria:
+    - "Accessibility audit completed with WCAG AAA target"
+    - "Zero automatic accessibility violations"
+    - "Keyboard navigation fully functional"
+    - "Color contrast ratios meet WCAG AAA (4.5:1 minimum)"
+    - "Testing with real users with disabilities completed"
+
+- skill_id: SKILL_UX_DESIGN_REVIEW
+  role: ROLE_UX
+  description: "Conduct design reviews ensuring quality, consistency, and usability standards"
+  prerequisites:
+    - "Design quality standards documented"
+    - "Design system and guidelines available"
+    - "Reviewers identified (peers, design lead, product)"
+  evidence_required:
+    - "Design review checklist completed"
+    - "Feedback provided on designs"
+    - "Design iterations made based on feedback"
+  artifacts_produced:
+    - "design-review-checklist.md"
+    - "design-feedback.txt"
+    - "design-revision-log.md"
+  scoring_rubric:
+    - criterion: "Thoroughness"
+      weight: 0.3
+      scale: "0-10: 0=superficial, 5=adequate, 10=comprehensive"
+    - criterion: "Feedback Quality"
+      weight: 0.3
+      scale: "0-10: 0=vague, 5=actionable, 10=specific with rationale"
+    - criterion: "Standards Enforcement"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=partial, 10=strict compliance"
+    - criterion: "Designer Support"
+      weight: 0.15
+      scale: "0-10: 0=harsh, 5=fair, 10=encouraging and constructive"
+  anti_patterns:
+    - "Reviews focused on personal taste"
+    - "No clear design standards being enforced"
+    - "Feedback not grounded in usability or design principles"
+    - "Designs approved without thorough review"
+    - "Review comments ignored in implementation"
+  test_hooks:
+    - "Verify review covers design system adherence"
+    - "Check for accessibility review"
+    - "Confirm usability considerations discussed"
+    - "Validate feedback is specific and actionable"
+  exit_criteria:
+    - "Design review completed for all major features (20+ items)"
+    - "Review checklist covers usability, accessibility, consistency"
+    - "At least 3 substantive feedback items per design"
+    - "Design revisions made based on review feedback"
+    - "Review sign-off obtained before handoff to engineering"

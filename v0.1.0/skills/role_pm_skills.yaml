@@ -1,0 +1,413 @@
+- skill_id: SKILL_PM_CUSTOMER_RESEARCH
+  role: ROLE_PM
+  description: "Conduct user research to understand customer needs, pain points, and behaviors"
+  prerequisites:
+    - "Research questions or hypotheses defined"
+    - "Target user segments identified"
+    - "Budget and timeline allocated for research"
+  evidence_required:
+    - "Research plan with methodology documented"
+    - "Interview transcripts or survey results collected"
+    - "User insights synthesized and documented"
+  artifacts_produced:
+    - ".pm/research/{segment}-research-findings.md"
+    - "research-methodology.txt"
+    - "user-personas.md"
+  scoring_rubric:
+    - criterion: "Sample Size"
+      weight: 0.25
+      scale: "0-10: 0=<5 users, 5=15-20 users, 10=30+ users with saturation"
+    - criterion: "Insight Quality"
+      weight: 0.3
+      scale: "0-10: 0=surface level, 5=good insights, 10=actionable with patterns"
+    - criterion: "Research Rigor"
+      weight: 0.25
+      scale: "0-10: 0=biased, 5=reasonable design, 10=validated methodology"
+    - criterion: "Documentation"
+      weight: 0.2
+      scale: "0-10: 0=minimal, 5=good notes, 10=full transcripts with quotes"
+  anti_patterns:
+    - "Interviewing only power users or internal users"
+    - "Leading questions that bias responses"
+    - "Talking at users instead of listening"
+    - "No follow-up on surprising or contradictory feedback"
+    - "Insights not grounded in actual user quotes"
+  test_hooks:
+    - "Verify research includes minimum 20 users"
+    - "Check for diverse user segment representation"
+    - "Confirm raw data (transcripts) are available"
+    - "Validate quotes support stated insights"
+  exit_criteria:
+    - "Research methodology documented with rationale"
+    - "Minimum 20 qualitative interviews or 100 survey responses"
+    - "Diverse user segments represented (at least 3 segments)"
+    - "Key insights supported with user quotes"
+    - "Research findings presented to stakeholders with recommendations"
+
+- skill_id: SKILL_PM_DISCOVERY_VALIDATOR
+  role: ROLE_PM
+  description: "Validate product ideas and concepts before committing to development"
+  prerequisites:
+    - "Product concept or feature idea defined"
+    - "Target customer segment identified"
+    - "Success metrics defined"
+  evidence_required:
+    - "Validation plan with approach and timeline"
+    - "User feedback from validation activities"
+    - "Go/no-go decision documented"
+  artifacts_produced:
+    - ".pm/validation/{feature}-validation-plan.md"
+    - "validation-results.xlsx"
+    - "concept-test-findings.md"
+  scoring_rubric:
+    - criterion: "Validation Approach"
+      weight: 0.25
+      scale: "0-10: 0=no validation, 5=basic testing, 10=multiple validation methods"
+    - criterion: "Sample Representation"
+      weight: 0.25
+      scale: "0-10: 0=internal only, 5=partial customers, 10=diverse external users"
+    - criterion: "Decision Clarity"
+      weight: 0.25
+      scale: "0-10: 0=ambiguous, 5=reasonable, 10=clear go/no-go with metrics"
+    - criterion: "Learning Capture"
+      weight: 0.25
+      scale: "0-10: 0=minimal, 5=good notes, 10=actionable learnings documented"
+  anti_patterns:
+    - "Validating with friends and family instead of real customers"
+    - "Confirmation bias seeking only supportive feedback"
+    - "Insufficient sample size leading to weak signals"
+    - "Ignoring contradictory feedback"
+    - "No clear pass/fail criteria before validation"
+  test_hooks:
+    - "Verify validation includes 10+ external users"
+    - "Check for documented success metrics"
+    - "Confirm no leading or biased questions used"
+    - "Validate go/no-go decision is data-driven"
+  exit_criteria:
+    - "Validation plan completed with multiple methods"
+    - "Minimum 10-15 customer interviews or tests conducted"
+    - "Clear go/no-go decision with supporting metrics"
+    - "Key learnings documented with implications"
+    - "Learnings incorporated into product roadmap"
+
+- skill_id: SKILL_PM_MARKET_GAP_ANALYSIS
+  role: ROLE_PM
+  description: "Analyze market gaps and competitive landscape to identify opportunities"
+  prerequisites:
+    - "Market definition and scope established"
+    - "Competitor list identified"
+    - "Market research data available"
+  evidence_required:
+    - "Competitive analysis completed"
+    - "Market gap opportunities documented"
+    - "Opportunity assessment with sizing"
+  artifacts_produced:
+    - ".pm/analysis/competitor-analysis.md"
+    - "market-gap-assessment.xlsx"
+    - "opportunity-sizing.md"
+  scoring_rubric:
+    - criterion: "Coverage Completeness"
+      weight: 0.25
+      scale: "0-10: 0=few competitors, 5=main competitors, 10=comprehensive landscape"
+    - criterion: "Gap Identification"
+      weight: 0.3
+      scale: "0-10: 0=none found, 5=some gaps, 10=multiple validated gaps"
+    - criterion: "Opportunity Sizing"
+      weight: 0.25
+      scale: "0-10: 0=guesses, 5=reasonable estimates, 10=data-driven with ranges"
+    - criterion: "Strategic Relevance"
+      weight: 0.2
+      scale: "0-10: 0=off-strategy, 5=related, 10=core strategic priority"
+  anti_patterns:
+    - "Analyzing only direct competitors"
+    - "Ignoring indirect or adjacent competition"
+    - "Opportunity sizing without market validation"
+    - "Gaps that competitors avoid for good reasons"
+    - "Underestimating barriers to entry"
+  test_hooks:
+    - "Verify 5+ competitors analyzed"
+    - "Check for direct and indirect competitors"
+    - "Confirm opportunity sizing has confidence ranges"
+    - "Validate strategic alignment discussed"
+  exit_criteria:
+    - "Minimum 5-7 competitors analyzed with features and positioning"
+    - "At least 3 market gaps identified with customer validation"
+    - "Opportunity sizing includes TAM, SAM, SOM estimates"
+    - "Barriers to entry and competitive response assessed"
+    - "Gap analysis presented to leadership with strategic recommendations"
+
+- skill_id: SKILL_PM_PRD_GENERATOR
+  role: ROLE_PM
+  description: "Write clear Product Requirements Documents defining features and success metrics"
+  prerequisites:
+    - "Feature concept validated with customers"
+    - "Business objectives and success metrics defined"
+    - "Technical feasibility assessed"
+  evidence_required:
+    - "PRD with feature specifications and acceptance criteria"
+    - "Success metrics and OKRs defined"
+    - "Stakeholder alignment documented"
+  artifacts_produced:
+    - ".pm/prd/{feature}-prd.md"
+    - "success-metrics.md"
+    - "acceptance-criteria.txt"
+  scoring_rubric:
+    - criterion: "Clarity"
+      weight: 0.3
+      scale: "0-10: 0=ambiguous, 5=clear intent, 10=unambiguous specifications"
+    - criterion: "Completeness"
+      weight: 0.25
+      scale: "0-10: 0=missing sections, 5=main specs, 10=comprehensive with edge cases"
+    - criterion: "Metrics Definition"
+      weight: 0.25
+      scale: "0-10: 0=no metrics, 5=basic metrics, 10=specific, measurable OKRs"
+    - criterion: "Feasibility Awareness"
+      weight: 0.2
+      scale: "0-10: 0=unrealistic, 5=reasonable, 10=phased with trade-offs"
+  anti_patterns:
+    - "PRDs written without customer validation"
+    - "Feature lists without problem statement"
+    - "Vague acceptance criteria"
+    - "Success metrics that are unmeasurable"
+    - "Ignoring technical constraints and trade-offs"
+  test_hooks:
+    - "Verify PRD has problem statement and business objectives"
+    - "Check for SMART success metrics"
+    - "Confirm user stories with acceptance criteria"
+    - "Validate tech team can estimate from PRD"
+  exit_criteria:
+    - "PRD includes problem statement, user stories, and acceptance criteria"
+    - "Success metrics are specific, measurable, and time-bound"
+    - "Edge cases and error scenarios documented"
+    - "Technical considerations and risks assessed"
+    - "PRD reviewed and signed off by engineering and design leads"
+
+- skill_id: SKILL_PM_EXPERIMENT_DESIGNER
+  role: ROLE_PM
+  description: "Design and run experiments to validate assumptions and measure impact"
+  prerequisites:
+    - "Hypothesis or assumption to test"
+    - "Success metrics and sample size calculated"
+    - "Experiment platform/tool configured"
+  evidence_required:
+    - "Experiment plan with design and hypothesis"
+    - "Statistical analysis completed"
+    - "Results and learnings documented"
+  artifacts_produced:
+    - ".pm/experiments/{feature}-experiment-plan.md"
+    - "experiment-results.xlsx"
+    - "statistical-analysis.txt"
+  scoring_rubric:
+    - criterion: "Hypothesis Quality"
+      weight: 0.25
+      scale: "0-10: 0=vague, 5=clear hypothesis, 10=testable with clear success"
+    - criterion: "Experimental Rigor"
+      weight: 0.3
+      scale: "0-10: 0=biased, 5=valid design, 10=controlled with proper duration"
+    - criterion: "Statistical Significance"
+      weight: 0.25
+      scale: "0-10: 0=underpowered, 5=minimum sample, 10=>95% confidence"
+    - criterion: "Learning Translation"
+      weight: 0.2
+      scale: "0-10: 0=none, 5=basic insights, 10=actionable next steps"
+  anti_patterns:
+    - "Stopping experiments early when results look good"
+    - "Running experiment on too small sample"
+    - "Not controlling for external variables"
+    - "Ignoring negative results"
+    - "Cherry-picking metrics that support hypothesis"
+  test_hooks:
+    - "Verify hypothesis is testable and clear"
+    - "Check sample size is statistically adequate"
+    - "Confirm experiment ran for minimum 2 weeks"
+    - "Validate results show statistical significance"
+  exit_criteria:
+    - "Experiment plan includes clear hypothesis and success metrics"
+    - "Sample size meets statistical power requirements (95%+ confidence)"
+    - "Experiment runs for minimum 2 weeks or until significance"
+    - "Results analyzed with confidence intervals provided"
+    - "Learnings documented and decision made based on results"
+
+- skill_id: SKILL_PM_PRIORITIZATION
+  role: ROLE_PM
+  description: "Prioritize features and initiatives based on impact, effort, and strategic value"
+  prerequisites:
+    - "Feature backlog with effort estimates"
+    - "Success metrics and OKRs defined"
+    - "Stakeholder inputs collected"
+  evidence_required:
+    - "Prioritization framework applied"
+    - "Prioritized roadmap created"
+    - "Prioritization rationale documented"
+  artifacts_produced:
+    - ".pm/roadmap/prioritization-matrix.xlsx"
+    - "feature-roadmap.md"
+    - "prioritization-rationale.txt"
+  scoring_rubric:
+    - criterion: "Framework Rigor"
+      weight: 0.25
+      scale: "0-10: 0=arbitrary, 5=consistent framework, 10=validated framework"
+    - criterion: "Data Usage"
+      weight: 0.25
+      scale: "0-10: 0=gut feel, 5=some data, 10=comprehensive data-driven"
+    - criterion: "Stakeholder Balance"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=considered, 10=balanced with rationale"
+    - criterion: "Clarity"
+      weight: 0.25
+      scale: "0-10: 0=unclear, 5=reasonable, 10=transparent with clear reasoning"
+  anti_patterns:
+    - "Prioritizing only high-visibility projects"
+    - "Ignoring technical debt and quality"
+    - "Prioritization hidden from engineering team"
+    - "No clear reasoning for trade-offs"
+    - "Constant re-prioritization without commitment"
+  test_hooks:
+    - "Verify prioritization framework is documented"
+    - "Check all features scored consistently"
+    - "Confirm impact and effort estimates reviewed"
+    - "Validate roadmap presented to stakeholders"
+  exit_criteria:
+    - "Prioritization framework defined with weighted criteria"
+    - "All features in backlog scored on impact and effort"
+    - "Quarterly roadmap created with clear priorities"
+    - "Prioritization rationale documented for top 10 items"
+    - "Roadmap reviewed and approved by leadership and engineering"
+
+- skill_id: SKILL_PM_STAKEHOLDER_COMMUNICATION
+  role: ROLE_PM
+  description: "Communicate product vision and strategy clearly to diverse stakeholders"
+  prerequisites:
+    - "Product vision and strategy articulated"
+    - "Stakeholder groups identified"
+    - "Communication channels established"
+  evidence_required:
+    - "Product vision and strategy documents"
+    - "Stakeholder communications delivered"
+    - "Feedback collected and incorporated"
+  artifacts_produced:
+    - ".pm/communications/product-vision.md"
+    - "stakeholder-updates.txt"
+    - "communication-plan.md"
+  scoring_rubric:
+    - criterion: "Clarity"
+      weight: 0.3
+      scale: "0-10: 0=confusing, 5=understandable, 10=crystal clear for all audiences"
+    - criterion: "Audience Adaptation"
+      weight: 0.25
+      scale: "0-10: 0=one-size-fits-all, 5=basic adaptation, 10=tailored per audience"
+    - criterion: "Frequency"
+      weight: 0.25
+      scale: "0-10: 0=sporadic, 5=monthly, 10=weekly with multiple channels"
+    - criterion: "Feedback Integration"
+      weight: 0.2
+      scale: "0-10: 0=ignored, 5=sometimes considered, 10=actively solicited and used"
+  anti_patterns:
+    - "Vision that is unclear or constantly changing"
+    - "Over-communicating to some groups, ignoring others"
+    - "Communicating too late or too infrequently"
+    - "One-way communication without feedback loops"
+    - "Inconsistent messaging across channels"
+  test_hooks:
+    - "Verify vision statement is concise and inspiring"
+    - "Check communication cadence is consistent"
+    - "Confirm stakeholders can articulate strategy"
+    - "Validate feedback mechanisms in place"
+  exit_criteria:
+    - "Product vision documented and communicated to all stakeholders"
+    - "Strategy communicated with clear quarterly OKRs"
+    - "Roadmap updates shared monthly with all stakeholders"
+    - "Feedback mechanisms established (surveys, 1-1s, office hours)"
+    - "Stakeholder satisfaction with communication >= 4/5"
+
+- skill_id: SKILL_PM_METRICS_ADVISOR
+  role: ROLE_PM
+  description: "Define and track metrics that measure product success and user health"
+  prerequisites:
+    - "Product objectives and OKRs defined"
+    - "Analytics infrastructure available"
+    - "Data team resources allocated"
+  evidence_required:
+    - "Success metrics dashboard created"
+    - "Metrics tracked and reported regularly"
+    - "Insights and actions from metrics documented"
+  artifacts_produced:
+    - ".pm/metrics/success-metrics.md"
+    - "metrics-dashboard.xlsx"
+    - "weekly-metrics-report.txt"
+  scoring_rubric:
+    - criterion: "Metric Quality"
+      weight: 0.3
+      scale: "0-10: 0=vanity metrics, 5=relevant metrics, 10=leading indicators"
+    - criterion: "Coverage"
+      weight: 0.25
+      scale: "0-10: 0=few metrics, 5=basic coverage, 10=leading, lagging, and health"
+    - criterion: "Tracking Rigor"
+      weight: 0.25
+      scale: "0-10: 0=manual, 5=automated, 10=real-time with alerts"
+    - criterion: "Action Orientation"
+      weight: 0.2
+      scale: "0-10: 0=no action, 5=occasional, 10=metrics drive weekly decisions"
+  anti_patterns:
+    - "Tracking only vanity metrics (page views, signups)"
+    - "Too many metrics without focus"
+    - "Metrics that are hard to explain or understand"
+    - "Historical data only, no leading indicators"
+    - "Metrics not driving any decisions"
+  test_hooks:
+    - "Verify metrics align with OKRs"
+    - "Check metrics dashboard updates weekly"
+    - "Confirm team understands metric definitions"
+    - "Validate metrics are actionable"
+  exit_criteria:
+    - "Success metrics defined for product with leading and lagging indicators"
+    - "Metrics dashboard created and updated weekly"
+    - "Root cause analysis for metric changes documented"
+    - "Metrics inform weekly product decisions and prioritization"
+    - "Metrics presentation given to leadership monthly"
+
+- skill_id: SKILL_PM_BUYER_PSYCHOLOGY
+  role: ROLE_PM
+  description: "Understand customer psychology and apply insights to product and marketing strategy"
+  prerequisites:
+    - "Target customer profile defined"
+    - "Sales and customer research data available"
+    - "Willingness to invest in customer psychology"
+  evidence_required:
+    - "Buyer psychology research completed"
+    - "Psychological insights applied to product"
+    - "A/B tests to validate psychological principles"
+  artifacts_produced:
+    - ".pm/psychology/buyer-psychology-analysis.md"
+    - "decision-framework.txt"
+    - "psychology-insights-applied.md"
+  scoring_rubric:
+    - criterion: "Research Depth"
+      weight: 0.25
+      scale: "0-10: 0=surface, 5=good insights, 10=comprehensive with data"
+    - criterion: "Insight Application"
+      weight: 0.3
+      scale: "0-10: 0=theoretical, 5=some application, 10=applied across product"
+    - criterion: "Validation"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=some A/B tests, 10=validated with experiments"
+    - criterion: "Business Impact"
+      weight: 0.2
+      scale: "0-10: 0=none, 5=modest improvements, 10=significant lift (10%+)"
+  anti_patterns:
+    - "Applying psychology without understanding customer context"
+    - "Using dark patterns that harm user trust"
+    - "Manipulative tactics that create poor long-term relationships"
+    - "Ignoring ethical implications of psychological principles"
+    - "Assumptions without validation"
+  test_hooks:
+    - "Verify psychology principles are ethical and aligned with brand"
+    - "Check A/B tests validate assumptions"
+    - "Confirm metrics show positive user impact"
+    - "Validate customer satisfaction not negatively impacted"
+  exit_criteria:
+    - "Buyer psychology research completed with customer interviews"
+    - "Key psychological principles identified for product"
+    - "Product changes implemented based on psychology insights"
+    - "A/B tests validate psychological changes drive conversion or engagement"
+    - "Business impact measured and reported (>5% improvement)"

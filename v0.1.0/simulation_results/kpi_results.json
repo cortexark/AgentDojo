@@ -1,0 +1,296 @@
+{
+  "timestamp": "2026-03-06T03:18:43.760439",
+  "total_scenarios": 5,
+  "scenarios": [
+    {
+      "scenario_id": "scenario_001",
+      "scenario_name": "Missing Requirements Discovery",
+      "duration_seconds": 1.6e-05,
+      "metrics": {
+        "artifact_correctness": 0.0,
+        "defect_detection_rate": 1.0,
+        "defect_escape_rate": 0.0,
+        "test_coverage": 0.0,
+        "skill_completion_rate": 0.95,
+        "escalation_rate": 3.0,
+        "phase_transition_success_rate": 0.2222222222222222,
+        "human_decision_time_minutes": 90.0,
+        "total_rework_hours": 360.0
+      },
+      "kpi_results": [
+        {
+          "kpi_name": "artifact_correctness",
+          "baseline": 0.95,
+          "expected_impact": 0.0,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "schedule_variance",
+          "baseline": 0.05,
+          "expected_impact": 0.25,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "defect_escape_rate",
+          "baseline": 0.02,
+          "expected_impact": 0.08,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "rework_cost",
+          "baseline": 0.0,
+          "expected_impact": 120.0,
+          "actual_value": 0.0,
+          "passed": true,
+          "variance_percent": 0
+        }
+      ]
+    },
+    {
+      "scenario_id": "scenario_002",
+      "scenario_name": "Flaky Tests and Build Instability",
+      "duration_seconds": 9e-06,
+      "metrics": {
+        "artifact_correctness": 1.0,
+        "defect_detection_rate": 0.0,
+        "defect_escape_rate": 1.0,
+        "test_coverage": 0.95,
+        "skill_completion_rate": 0.3,
+        "escalation_rate": 0.0,
+        "phase_transition_success_rate": 0.7777777777777778,
+        "human_decision_time_minutes": 0.0,
+        "total_rework_hours": 0.0
+      },
+      "kpi_results": [
+        {
+          "kpi_name": "test_reliability",
+          "baseline": 0.98,
+          "expected_impact": 0.72,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "build_success_rate",
+          "baseline": 0.95,
+          "expected_impact": 0.65,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "pipeline_velocity",
+          "baseline": 1.0,
+          "expected_impact": 0.45,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "defect_escape_rate",
+          "baseline": 0.02,
+          "expected_impact": 0.12,
+          "actual_value": 1.0,
+          "passed": true,
+          "variance_percent": 4900.0
+        },
+        {
+          "kpi_name": "skill_completion_rate",
+          "baseline": 0.98,
+          "expected_impact": 0.7,
+          "actual_value": 0.3,
+          "passed": false,
+          "variance_percent": -69.38775510204081
+        }
+      ]
+    },
+    {
+      "scenario_id": "scenario_003",
+      "scenario_name": "Security Vulnerability Discovery",
+      "duration_seconds": 7e-06,
+      "metrics": {
+        "artifact_correctness": 1.0,
+        "defect_detection_rate": 1.0,
+        "defect_escape_rate": 0.0,
+        "test_coverage": 0.45,
+        "skill_completion_rate": 0.95,
+        "escalation_rate": 2.0,
+        "phase_transition_success_rate": 0.5555555555555556,
+        "human_decision_time_minutes": 60.0,
+        "total_rework_hours": 210.0
+      },
+      "kpi_results": [
+        {
+          "kpi_name": "security_defect_escape_rate",
+          "baseline": 0.01,
+          "expected_impact": 0.08,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "schedule_variance",
+          "baseline": 0.05,
+          "expected_impact": 0.4,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "customer_trust_impact",
+          "baseline": 1.0,
+          "expected_impact": 0.6,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "remediation_cost",
+          "baseline": 0.0,
+          "expected_impact": 200.0,
+          "actual_value": 0.0,
+          "passed": true,
+          "variance_percent": 0
+        },
+        {
+          "kpi_name": "incident_response_time",
+          "baseline": 0.0,
+          "expected_impact": 4.0,
+          "actual_value": 0.0,
+          "passed": true,
+          "variance_percent": 0
+        }
+      ]
+    },
+    {
+      "scenario_id": "scenario_004",
+      "scenario_name": "API Breaking Change and Compatibility Issues",
+      "duration_seconds": 6e-06,
+      "metrics": {
+        "artifact_correctness": 1.0,
+        "defect_detection_rate": 0.0,
+        "defect_escape_rate": 1.0,
+        "test_coverage": 0.95,
+        "skill_completion_rate": 0.3,
+        "escalation_rate": 0.0,
+        "phase_transition_success_rate": 0.8888888888888888,
+        "human_decision_time_minutes": 0.0,
+        "total_rework_hours": 0.0
+      },
+      "kpi_results": [
+        {
+          "kpi_name": "api_stability",
+          "baseline": 0.99,
+          "expected_impact": 0.3,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "customer_support_load",
+          "baseline": 100,
+          "expected_impact": 850,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "integration_failure_rate",
+          "baseline": 0.01,
+          "expected_impact": 0.35,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "customer_satisfaction",
+          "baseline": 4.5,
+          "expected_impact": 2.1,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "remediation_cost",
+          "baseline": 0.0,
+          "expected_impact": 300.0,
+          "actual_value": 0.0,
+          "passed": true,
+          "variance_percent": 0
+        }
+      ]
+    },
+    {
+      "scenario_id": "scenario_005",
+      "scenario_name": "Conflicting Stakeholder Requirements",
+      "duration_seconds": 7e-06,
+      "metrics": {
+        "artifact_correctness": 1.0,
+        "defect_detection_rate": 0.8,
+        "defect_escape_rate": 0.2,
+        "test_coverage": 0.45,
+        "skill_completion_rate": 0.6,
+        "escalation_rate": 0.0,
+        "phase_transition_success_rate": 0.5555555555555556,
+        "human_decision_time_minutes": 0.0,
+        "total_rework_hours": 180.0
+      },
+      "kpi_results": [
+        {
+          "kpi_name": "stakeholder_satisfaction",
+          "baseline": 4.2,
+          "expected_impact": 2.8,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "decision_quality",
+          "baseline": 0.85,
+          "expected_impact": 0.45,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "planning_time",
+          "baseline": 40,
+          "expected_impact": 120,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "team_morale",
+          "baseline": 4.0,
+          "expected_impact": 2.5,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        },
+        {
+          "kpi_name": "project_schedule_impact",
+          "baseline": 0.0,
+          "expected_impact": 10.0,
+          "actual_value": 0.0,
+          "passed": true,
+          "variance_percent": 0
+        },
+        {
+          "kpi_name": "team_alignment",
+          "baseline": 0.9,
+          "expected_impact": 0.5,
+          "actual_value": 0.0,
+          "passed": false,
+          "variance_percent": -100.0
+        }
+      ]
+    }
+  ]
+}

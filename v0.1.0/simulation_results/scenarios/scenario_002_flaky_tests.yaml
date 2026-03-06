@@ -1,0 +1,124 @@
+scenario_id: scenario_002
+name: "Flaky Tests and Build Instability"
+description: "Tests orchestrator's ability to handle intermittent test failures, false positives, and build pipeline unreliability during Quality phase"
+
+injected_failures:
+  - failure_id: f004_race_condition_test
+    type: flaky_test
+    description: "Concurrency test fails intermittently due to timing issues"
+    failure_rate: 0.3
+    affected_test_suite: integration_tests
+    root_cause: "Missing synchronization in test setup"
+    effort_to_remediate: 40
+
+  - failure_id: f005_environmental_flakiness
+    type: flaky_test
+    description: "Tests fail when run in parallel due to shared resource contention"
+    failure_rate: 0.25
+    affected_test_suite: e2e_tests
+    root_cause: "Test isolation insufficient"
+    effort_to_remediate: 60
+
+  - failure_id: f006_timeout_flakiness
+    type: flaky_test
+    description: "Tests timeout intermittently on slower CI runners"
+    failure_rate: 0.15
+    affected_test_suite: performance_tests
+    root_cause: "Timeout thresholds too aggressive"
+    effort_to_remediate: 20
+
+  - failure_id: f007_external_service_flakiness
+    type: flaky_test
+    description: "Tests fail when external service is slow to respond"
+    failure_rate: 0.35
+    affected_test_suite: integration_tests
+    root_cause: "Missing retry logic and mocking"
+    effort_to_remediate: 50
+
+affected_phases:
+  - Build
+  - Quality
+  - Launch
+
+expected_outcomes:
+  - "QA should identify pattern of flaky tests"
+  - "QA should challenge team on build stability before Launch phase"
+  - "Challenge escalation should trigger investigation"
+  - "Root cause analysis should identify environmental or timing issues"
+  - "System should block transition to Launch with unresolved flakiness"
+  - "Remediation plan should be tracked and verified"
+  - "Test improvements should be verified with repeated test runs"
+
+failure_tags:
+  - "[FAIL:testing:high]"
+  - "[FAIL:reliability:high]"
+  - "[FAIL:pipeline:critical]"
+  - "[FAIL:quality_gates:high]"
+
+kpi_impact:
+  test_reliability:
+    baseline: 0.98
+    expected_impact: 0.72
+    measurement: "Percentage of consistently passing test runs"
+
+  build_success_rate:
+    baseline: 0.95
+    expected_impact: 0.65
+    measurement: "Percentage of CI builds that complete successfully"
+
+  pipeline_velocity:
+    baseline: 1.0
+    expected_impact: 0.45
+    measurement: "Relative speed of CI/CD pipeline (due to retries)"
+
+  defect_escape_rate:
+    baseline: 0.02
+    expected_impact: 0.12
+    measurement: "Failed tests may mask real defects"
+
+  skill_completion_rate:
+    baseline: 0.98
+    expected_impact: 0.70
+    measurement: "Percentage of automated quality checks completing successfully"
+
+bug_taxonomy_category: "infinite_loop"
+
+validation_checks:
+  - check_id: vc006
+    name: "Flakiness Detection"
+    phase: Quality
+    condition: "flaky_tests_identified"
+    expected_result: true
+
+  - check_id: vc007
+    name: "QA Challenge Raised"
+    phase: Quality
+    condition: "qa_challenge_on_flakiness"
+    expected_result: true
+
+  - check_id: vc008
+    name: "Build Stability Gate"
+    phase: Quality
+    condition: "build_failure_rate_below_threshold"
+    expected_result: false
+
+  - check_id: vc009
+    name: "Launch Blocked"
+    phase: Launch
+    condition: "launch_blocked_due_to_instability"
+    expected_result: true
+
+  - check_id: vc010
+    name: "Remediation Tracking"
+    phase: Quality
+    condition: "remediation_actions_tracked"
+    expected_result: true
+
+metrics_to_track:
+  - flaky_test_count
+  - test_failure_rate
+  - test_pass_rate_variance
+  - ci_build_success_rate
+  - test_execution_time
+  - remediation_effort_hours
+  - escalation_resolution_time

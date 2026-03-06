@@ -1,0 +1,459 @@
+- skill_id: SKILL_PE_TECH_STRATEGY
+  role: ROLE_PE
+  description: "Define long-term technology strategy aligned with business objectives"
+  prerequisites:
+    - "Business strategy and growth targets defined"
+    - "Current technology landscape assessed"
+    - "Technical team input collected"
+  evidence_required:
+    - "Technology strategy document with 3-5 year roadmap"
+    - "Technology choices evaluated against criteria"
+    - "Migration plan for legacy systems"
+  artifacts_produced:
+    - ".pe/strategy/technology-strategy.md"
+    - "tech-roadmap-5yr.md"
+    - "technology-evaluation-matrix.xlsx"
+  scoring_rubric:
+    - criterion: "Business Alignment"
+      weight: 0.3
+      scale: "0-10: 0=misaligned, 5=related, 10=clearly supports growth targets"
+    - criterion: "Technical Feasibility"
+      weight: 0.25
+      scale: "0-10: 0=impractical, 5=reasonable, 10=clear path with milestones"
+    - criterion: "Risk Mitigation"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=basic risks noted, 10=comprehensive risk analysis"
+    - criterion: "Stakeholder Buy-in"
+      weight: 0.2
+      scale: "0-10: 0=no alignment, 5=partial, 10=executive and team agreement"
+  anti_patterns:
+    - "Technology choices driven by trends, not business needs"
+    - "Ignoring technical debt in strategy"
+    - "Strategy without clear execution plan"
+    - "Underestimating migration risks and costs"
+    - "Lack of stakeholder alignment"
+  test_hooks:
+    - "Verify strategy aligns with business OKRs"
+    - "Check technology choices justified"
+    - "Confirm migration plan is realistic"
+    - "Validate tech team consensus on approach"
+  exit_criteria:
+    - "Technology strategy document outlines 3-5 year direction"
+    - "Key technology choices evaluated with trade-off analysis"
+    - "Business case made for each major initiative"
+    - "Migration plan for legacy systems detailed"
+    - "Strategy reviewed and approved by engineering leadership and CFO"
+
+- skill_id: SKILL_PE_ARCHITECTURE_REVIEW
+  role: ROLE_PE
+  description: "Review and critique system architecture for scalability, security, and maintainability"
+  prerequisites:
+    - "Architecture design or ADR available"
+    - "Scale requirements and constraints known"
+    - "Architecture review process established"
+  evidence_required:
+    - "Architecture review completed with findings"
+    - "Recommendations documented"
+    - "Risk assessment completed"
+  artifacts_produced:
+    - ".pe/reviews/{system}-architecture-review.md"
+    - "architecture-risk-assessment.txt"
+    - "improvement-recommendations.md"
+  scoring_rubric:
+    - criterion: "Review Thoroughness"
+      weight: 0.3
+      scale: "0-10: 0=superficial, 5=good coverage, 10=comprehensive analysis"
+    - criterion: "Insight Quality"
+      weight: 0.25
+      scale: "0-10: 0=surface observations, 5=good insights, 10=identifies hidden risks"
+    - criterion: "Constructiveness"
+      weight: 0.25
+      scale: "0-10: 0=overly critical, 5=balanced, 10=actionable with priorities"
+    - criterion: "Risk Identification"
+      weight: 0.2
+      scale: "0-10: 0=missed risks, 5=main risks noted, 10=comprehensive risk matrix"
+  anti_patterns:
+    - "Reviewing only at high level without technical depth"
+    - "Recommending rewrite when improvements would suffice"
+    - "Ignoring operational and organizational constraints"
+    - "No prioritization of identified issues"
+    - "Dismissing valid concerns from implementation team"
+  test_hooks:
+    - "Verify review covers scalability, security, and maintainability"
+    - "Check at least 5 distinct findings documented"
+    - "Confirm risk ratings include severity and likelihood"
+    - "Validate recommendations are actionable"
+  exit_criteria:
+    - "Architecture review completed with comprehensive findings"
+    - "At least 5-7 improvement areas identified with severity ratings"
+    - "Scalability and security considerations assessed"
+    - "Recommendations prioritized by impact and effort"
+    - "Review findings presented to architecture team for discussion"
+
+- skill_id: SKILL_PE_TECHNICAL_QUALITY
+  role: ROLE_PE
+  description: "Establish and maintain technical quality standards across the engineering organization"
+  prerequisites:
+    - "Quality standards and practices documented"
+    - "Engineering team size and skill levels assessed"
+    - "Metrics and monitoring tools available"
+  evidence_required:
+    - "Quality standards defined for the organization"
+    - "Quality metrics dashboard created and maintained"
+    - "Quality improvement initiatives tracked"
+  artifacts_produced:
+    - ".pe/quality/quality-standards.md"
+    - "quality-metrics-dashboard.xlsx"
+    - "quality-improvement-roadmap.md"
+  scoring_rubric:
+    - criterion: "Standards Clarity"
+      weight: 0.3
+      scale: "0-10: 0=vague, 5=clear, 10=detailed with examples"
+    - criterion: "Adoption"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=partial, 10=consistently followed"
+    - criterion: "Metrics Quality"
+      weight: 0.25
+      scale: "0-10: 0=misleading, 5=meaningful, 10=leading indicators"
+    - criterion: "Improvement Impact"
+      weight: 0.2
+      scale: "0-10: 0=none, 5=some improvements, 10=measurable quality lift"
+  anti_patterns:
+    - "Standards that are too strict and slow down development"
+    - "Metrics that incentivize wrong behavior"
+    - "Quality discussions without data"
+    - "No accountability for quality standards"
+    - "Standards not aligned with actual team capabilities"
+  test_hooks:
+    - "Verify standards are documented and accessible"
+    - "Check metrics are automated and real-time"
+    - "Confirm team understands quality expectations"
+    - "Validate standards reviewed quarterly"
+  exit_criteria:
+    - "Quality standards defined for code, testing, and documentation"
+    - "Quality metrics dashboard shows trend data over 3+ months"
+    - "Code coverage, defect rates, and incident metrics tracked"
+    - "Quality improvement initiatives with measurable targets defined"
+    - "Standards reviewed and agreed upon by engineering leadership"
+
+- skill_id: SKILL_PE_MIGRATION_PLANNER
+  role: ROLE_PE
+  description: "Plan and execute large-scale system migrations with minimal disruption"
+  prerequisites:
+    - "Legacy system and target system understood"
+    - "Migration scope and constraints defined"
+    - "Stakeholders and dependencies identified"
+  evidence_required:
+    - "Migration plan with phases and timeline"
+    - "Risk mitigation strategy documented"
+    - "Rollback procedures tested"
+  artifacts_produced:
+    - ".pe/migrations/{system}-migration-plan.md"
+    - "migration-risk-mitigation.txt"
+    - "rollback-procedures.md"
+  scoring_rubric:
+    - criterion: "Plan Completeness"
+      weight: 0.3
+      scale: "0-10: 0=incomplete, 5=good plan, 10=comprehensive with details"
+    - criterion: "Risk Mitigation"
+      weight: 0.25
+      scale: "0-10: 0=risky, 5=basic mitigation, 10=comprehensive risk reduction"
+    - criterion: "Feasibility"
+      weight: 0.25
+      scale: "0-10: 0=unrealistic, 5=tight timeline, 10=reasonable with buffer"
+    - criterion: "Team Readiness"
+      weight: 0.2
+      scale: "0-10: 0=unprepared, 5=basic prep, 10=fully trained and confident"
+  anti_patterns:
+    - "Big bang migrations without validation phase"
+    - "No rollback plan if issues discovered"
+    - "Insufficient testing before migration"
+    - "Underestimating data migration complexity"
+    - "Poor communication with stakeholders"
+  test_hooks:
+    - "Verify migration plan has 3+ phases"
+    - "Check rollback procedures are documented and tested"
+    - "Confirm communication plan includes stakeholders"
+    - "Validate data migration validation approach"
+  exit_criteria:
+    - "Migration plan includes phased approach with success criteria"
+    - "Risk assessment identifies minimum 5 migration risks"
+    - "Rollback procedures documented and tested"
+    - "Data migration validation approach detailed"
+    - "Migration plan approved by impacted teams and leadership"
+
+- skill_id: SKILL_PE_LEVERAGE_ANALYZER
+  role: ROLE_PE
+  description: "Identify opportunities to maximize leverage through reuse, tools, and automation"
+  prerequisites:
+    - "Engineering organization context understood"
+    - "Tool landscape and automation opportunities assessed"
+    - "Team skill distribution known"
+  evidence_required:
+    - "Leverage opportunities identified and prioritized"
+    - "ROI analysis for key initiatives"
+    - "Reusable components or tools created"
+  artifacts_produced:
+    - ".pe/leverage/leverage-opportunities.md"
+    - "roi-analysis.xlsx"
+    - "reusable-component-registry.md"
+  scoring_rubric:
+    - criterion: "Opportunity Identification"
+      weight: 0.3
+      scale: "0-10: 0=few ideas, 5=good opportunities, 10=comprehensive analysis"
+    - criterion: "ROI Assessment"
+      weight: 0.25
+      scale: "0-10: 0=guesses, 5=reasonable, 10=data-driven with scenarios"
+    - criterion: "Implementation Quality"
+      weight: 0.25
+      scale: "0-10: 0=poor reuse, 5=functional, 10=well-designed reusable"
+    - criterion: "Adoption"
+      weight: 0.2
+      scale: "0-10: 0=ignored, 5=partial use, 10=widely adopted"
+  anti_patterns:
+    - "Building tools that only one team uses"
+    - "Over-engineering solutions"
+    - "No documentation for reusable components"
+    - "Leveraging opportunities that create technical debt"
+    - "No measurement of leverage impact"
+  test_hooks:
+    - "Verify opportunity analysis covers 5+ areas"
+    - "Check ROI estimates are reasonable"
+    - "Confirm at least 3 teams using reusable components"
+    - "Validate adoption metrics tracked"
+  exit_criteria:
+    - "10+ leverage opportunities identified and prioritized"
+    - "Top 3 opportunities have detailed ROI analysis"
+    - "Reusable components created and documented"
+    - "Adoption of reusable components tracked (>50% adoption)"
+    - "Leverage roadmap presented to engineering leadership"
+
+- skill_id: SKILL_PE_ORG_HEALTH
+  role: ROLE_PE
+  description: "Monitor and improve organizational health including culture, growth, and retention"
+  prerequisites:
+    - "Organization structure understood"
+    - "Team feedback mechanisms established"
+    - "Hiring and development processes in place"
+  evidence_required:
+    - "Organization health assessment completed"
+    - "Improvement initiatives identified and tracked"
+    - "Metrics monitored and reported"
+  artifacts_produced:
+    - ".pe/org/organization-health-assessment.md"
+    - "org-health-metrics.xlsx"
+    - "improvement-initiatives.md"
+  scoring_rubric:
+    - criterion: "Assessment Comprehensiveness"
+      weight: 0.3
+      scale: "0-10: 0=surface, 5=good understanding, 10=deep analysis"
+    - criterion: "Data Quality"
+      weight: 0.25
+      scale: "0-10: 0=opinions, 5=some data, 10=comprehensive metrics"
+    - criterion: "Initiative Impact"
+      weight: 0.25
+      scale: "0-10: 0=no impact, 5=some improvements, 10=measurable health lift"
+    - criterion: "Continuity"
+      weight: 0.2
+      scale: "0-10: 0=one-time, 5=periodic, 10=continuous monitoring"
+  anti_patterns:
+    - "Health initiatives without understanding root causes"
+    - "Ignoring retention issues until too late"
+    - "Treating symptoms without addressing causes"
+    - "Lack of psychological safety to provide honest feedback"
+    - "Health improvements that only benefit top performers"
+  test_hooks:
+    - "Verify assessment includes 5+ health dimensions"
+    - "Check pulse surveys conducted regularly"
+    - "Confirm retention and promotion metrics tracked"
+    - "Validate improvement initiatives have owners"
+  exit_criteria:
+    - "Organization health assessment covers engagement, growth, retention, and safety"
+    - "Health metrics tracked with 3+ months historical data"
+    - "At least 3 improvement initiatives identified with owners"
+    - "Initiatives address root causes, not symptoms"
+    - "Health assessment shared with leadership quarterly"
+
+- skill_id: SKILL_PE_INFLUENCE_NAVIGATOR
+  role: ROLE_PE
+  description: "Navigate organizational politics and build influence to drive technical initiatives"
+  prerequisites:
+    - "Organizational structure and power dynamics understood"
+    - "Initiative and stakeholders identified"
+    - "Political landscape assessed"
+  evidence_required:
+    - "Stakeholder map and influence strategy created"
+    - "Initiative successfully championed and executed"
+    - "Cross-functional collaboration established"
+  artifacts_produced:
+    - ".pe/influence/stakeholder-map.md"
+    - "influence-strategy.txt"
+    - "collaboration-outcomes.md"
+  scoring_rubric:
+    - criterion: "Stakeholder Understanding"
+      weight: 0.25
+      scale: "0-10: 0=surface, 5=good understanding, 10=deep insights"
+    - criterion: "Strategy Effectiveness"
+      weight: 0.3
+      scale: "0-10: 0=failed, 5=partial success, 10=clear win"
+    - criterion: "Relationship Building"
+      weight: 0.25
+      scale: "0-10: 0=transactional, 5=good working, 10=trusted partnerships"
+    - criterion: "Authenticity"
+      weight: 0.2
+      scale: "0-10: 0=manipulative, 5=authentic, 10=trusted advisor"
+  anti_patterns:
+    - "Manipulative tactics that damage relationships"
+    - "Over-reliance on formal authority"
+    - "Ignoring stakeholder motivations and constraints"
+    - "Not building genuine relationships"
+    - "Lack of transparency about motivations"
+  test_hooks:
+    - "Verify stakeholder analysis identifies 5+ key stakeholders"
+    - "Check influence strategy includes multiple approaches"
+    - "Confirm initiative achieved goals"
+    - "Validate stakeholder relationships improved"
+  exit_criteria:
+    - "Stakeholder map identifies key influencers and their motivations"
+    - "Influence strategy developed with tailored approaches per stakeholder"
+    - "Initiative successfully championed and approved"
+    - "Cross-functional collaboration achieved measurable results"
+    - "Feedback from stakeholders confirms improved relationships"
+
+- skill_id: SKILL_PE_DECISION_FACILITATOR
+  role: ROLE_PE
+  description: "Facilitate complex technical decisions with multiple stakeholders and constraints"
+  prerequisites:
+    - "Decision point and alternatives identified"
+    - "Stakeholders and their concerns known"
+    - "Decision-making framework established"
+  evidence_required:
+    - "Decision framework and criteria documented"
+    - "Alternatives evaluated with trade-offs"
+    - "Decision made with stakeholder buy-in"
+  artifacts_produced:
+    - ".pe/decisions/{decision}-framework.md"
+    - "decision-matrix.xlsx"
+    - "decision-rationale.md"
+  scoring_rubric:
+    - criterion: "Framework Quality"
+      weight: 0.3
+      scale: "0-10: 0=absent, 5=basic, 10=rigorous with clear criteria"
+    - criterion: "Inclusiveness"
+      weight: 0.25
+      scale: "0-10: 0=top-down, 5=some input, 10=all perspectives heard"
+    - criterion: "Decision Quality"
+      weight: 0.25
+      scale: "0-10: 0=poor, 5=reasonable, 10=optimal within constraints"
+    - criterion: "Stakeholder Buy-in"
+      weight: 0.2
+      scale: "0-10: 0=resistance, 5=grudging agreement, 10=enthusiastic support"
+  anti_patterns:
+    - "Decisions made without input from affected parties"
+    - "Analysis that cherry-picks supporting data"
+    - "Ignoring valid concerns from stakeholders"
+    - "No clear rationale for decision"
+    - "Lack of follow-through on implementation"
+  test_hooks:
+    - "Verify decision framework is transparent"
+    - "Check all major alternatives evaluated"
+    - "Confirm stakeholders understand and accept decision"
+    - "Validate decision rationale is documented"
+  exit_criteria:
+    - "Decision framework defined with weighted criteria"
+    - "Minimum 3 alternatives evaluated with trade-off analysis"
+    - "All stakeholder perspectives documented and addressed"
+    - "Clear decision rationale communicated to team"
+    - "Stakeholder feedback confirms alignment and commitment"
+
+- skill_id: SKILL_PE_MENTORSHIP_SPONSORSHIP
+  role: ROLE_PE
+  description: "Mentor and sponsor high-potential engineers to accelerate their growth"
+  prerequisites:
+    - "Mentees identified with growth potential"
+    - "Development goals and timelines set"
+    - "Mentorship structure established"
+  evidence_required:
+    - "Mentorship plan with goals and milestones"
+    - "Regular feedback and progress tracking"
+    - "Career development outcomes demonstrated"
+  artifacts_produced:
+    - ".pe/mentorship/{engineer}-development-plan.md"
+    - "progress-tracking-log.txt"
+    - "outcomes-summary.md"
+  scoring_rubric:
+    - criterion: "Goal Clarity"
+      weight: 0.25
+      scale: "0-10: 0=vague, 5=clear goals, 10=specific with milestones"
+    - criterion: "Mentee Growth"
+      weight: 0.3
+      scale: "0-10: 0=no growth, 5=incremental progress, 10=significant advancement"
+    - criterion: "Engagement Quality"
+      weight: 0.25
+      scale: "0-10: 0=absent, 5=periodic, 10=consistent with deep feedback"
+    - criterion: "Sponsorship Impact"
+      weight: 0.2
+      scale: "0-10: 0=no advocacy, 5=some support, 10=active promotion"
+  anti_patterns:
+    - "Mentoring only people who already have advantages"
+    - "Mentorship without clear goals"
+    - "Too much direction, not enough autonomy"
+    - "Mentee careers stalling after sponsorship ends"
+    - "Lack of follow-through and accountability"
+  test_hooks:
+    - "Verify mentees identify specific growth areas"
+    - "Check for regular 1:1 meetings (weekly or bi-weekly)"
+    - "Confirm mentee receives challenging projects"
+    - "Validate career progression outcomes"
+  exit_criteria:
+    - "Mentorship plans created for 3+ engineers with specific goals"
+    - "Monthly progress tracking shows advancement against goals"
+    - "Mentees receive stretch projects and visibility"
+    - "At least 1 mentee promoted or advanced to new opportunity"
+    - "Mentees report meaningful growth and clear career path"
+
+- skill_id: SKILL_PE_INCIDENT_RELIABILITY
+  role: ROLE_PE
+  description: "Build incident response capability and drive reliability through post-mortems"
+  prerequisites:
+    - "Incident response process established"
+    - "Monitoring and alerting in place"
+    - "Post-mortem culture developing"
+  evidence_required:
+    - "Incident response procedures documented"
+    - "Post-mortems completed for major incidents"
+    - "Reliability improvements tracked from learnings"
+  artifacts_produced:
+    - ".pe/reliability/incident-response-procedures.md"
+    - ".pe/postmortems/{incident}-postmortem.md"
+    - "reliability-improvements-tracking.xlsx"
+  scoring_rubric:
+    - criterion: "MTTR Reduction"
+      weight: 0.3
+      scale: "0-10: 0=static, 5=some improvement, 10=>30% reduction"
+    - criterion: "Post-Mortem Quality"
+      weight: 0.25
+      scale: "0-10: 0=blame, 5=good analysis, 10=blameless with learnings"
+    - criterion: "Improvement Implementation"
+      weight: 0.25
+      scale: "0-10: 0=ignored, 5=partial, 10=systematic with SLAs"
+    - criterion: "Culture"
+      weight: 0.2
+      scale: "0-10: 0=fearful, 5=neutral, 10=psychologically safe"
+  anti_patterns:
+    - "Post-mortems that focus on blame instead of learning"
+    - "Recommendations that are never implemented"
+    - "Incidents hidden or under-reported"
+    - "No systemic improvements despite recurring incidents"
+    - "Lack of psychological safety to report issues"
+  test_hooks:
+    - "Verify post-mortems are conducted within 24-48 hours"
+    - "Check action items are tracked and completed"
+    - "Confirm recurring incidents are declining"
+    - "Validate team feels safe reporting incidents"
+  exit_criteria:
+    - "Incident response procedures documented and tested"
+    - "Post-mortems completed for 100% of major incidents (>15 min downtime)"
+    - "MTTR trending down month-over-month"
+    - "Systemic improvements implemented from recurring patterns"
+    - "Reliability metrics (SLA adherence, incident frequency) improving"

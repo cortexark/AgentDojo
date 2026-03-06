@@ -1,0 +1,459 @@
+- skill_id: SKILL_QA_TEST_STRATEGY
+  role: ROLE_QA
+  description: "Develop comprehensive test strategies aligned with product requirements and risk assessment"
+  prerequisites:
+    - "Product requirements or feature specification available"
+    - "Risk assessment completed"
+    - "Testing budget and timeline defined"
+  evidence_required:
+    - "Test strategy document with scope and approach"
+    - "Risk matrix with testing priorities"
+    - "Test coverage plan and metrics"
+  artifacts_produced:
+    - ".qa/strategy/{feature}-test-strategy.md"
+    - "risk-assessment-matrix.xlsx"
+    - "coverage-plan.md"
+  scoring_rubric:
+    - criterion: "Risk Coverage"
+      weight: 0.3
+      scale: "0-10: 0=misses critical risks, 5=covers high risks, 10=comprehensive matrix"
+    - criterion: "Testing Approach"
+      weight: 0.25
+      scale: "0-10: 0=ad-hoc, 5=structured, 10=optimized for ROI"
+    - criterion: "Scope Definition"
+      weight: 0.25
+      scale: "0-10: 0=unclear, 5=clear boundaries, 10=explicit in/out with rationale"
+    - criterion: "Metrics Planning"
+      weight: 0.2
+      scale: "0-10: 0=none, 5=basic metrics, 10=comprehensive traceability matrix"
+  anti_patterns:
+    - "Testing everything equally regardless of risk"
+    - "No prioritization based on impact"
+    - "Ignoring non-functional requirements (performance, security)"
+    - "Missing edge cases and boundary conditions"
+    - "Strategy created after development completed"
+  test_hooks:
+    - "Verify risk matrix has minimum 5 risk items"
+    - "Check that high-risk items have dedicated test cases"
+    - "Confirm coverage percentages specified"
+    - "Validate strategy reviewed by PM and Engineering Lead"
+  exit_criteria:
+    - "Risk assessment identifies minimum 5 risks with severity levels"
+    - "Test approach documented with rationale for selected methods"
+    - "Coverage targets defined (unit, integration, e2e)"
+    - "Resource and timeline estimates provided"
+    - "Strategy approved by product and engineering leadership"
+
+- skill_id: SKILL_QA_TEST_PLAN
+  role: ROLE_QA
+  description: "Create detailed test plans with test cases, traceability, and execution schedule"
+  prerequisites:
+    - "Test strategy approved"
+    - "Requirements or user stories available"
+    - "Test environment specifications defined"
+  evidence_required:
+    - "Test plan document with scope and approach"
+    - "Test cases written with clear steps and expected results"
+    - "Traceability matrix linking requirements to tests"
+  artifacts_produced:
+    - ".qa/plans/{feature}-test-plan.md"
+    - ".qa/cases/{feature}-test-cases.xlsx"
+    - "traceability-matrix.xlsx"
+  scoring_rubric:
+    - criterion: "Test Case Quality"
+      weight: 0.3
+      scale: "0-10: 0=vague, 5=clear steps, 10=detailed with data and assertions"
+    - criterion: "Coverage Completeness"
+      weight: 0.25
+      scale: "0-10: 0=minimal cases, 5=happy path, 10=happy+sad+edge paths"
+    - criterion: "Traceability"
+      weight: 0.25
+      scale: "0-10: 0=no mapping, 5=partial, 10=100% requirements traced"
+    - criterion: "Maintainability"
+      weight: 0.2
+      scale: "0-10: 0=brittle, 5=reasonable, 10=parameterized and reusable"
+  anti_patterns:
+    - "Test cases that are too vague to execute"
+    - "Duplicate test cases"
+    - "No distinction between positive and negative tests"
+    - "Missing boundary value and equivalence class tests"
+    - "Test data hardcoded in test cases"
+  test_hooks:
+    - "Verify all test cases have clear pass/fail criteria"
+    - "Check for missing equivalence classes"
+    - "Confirm test data setup is documented"
+    - "Validate 100% requirements traceability"
+  exit_criteria:
+    - "Test plan includes scope, approach, schedule, and resources"
+    - "Minimum 20 test cases written with clear steps and expected results"
+    - "Traceability matrix shows 100% requirement coverage"
+    - "Test data requirements documented"
+    - "Test plan reviewed and approved by QA lead and PM"
+
+- skill_id: SKILL_QA_EXPLORATORY_TESTING
+  role: ROLE_QA
+  description: "Perform systematic exploratory testing to discover defects not covered by planned tests"
+  prerequisites:
+    - "Feature available in test environment"
+    - "User documentation or requirements available"
+    - "Test environment stable and accessible"
+  evidence_required:
+    - "Session-based testing notes and observations"
+    - "Bug reports created for found defects"
+    - "Test scenarios and sessions documented"
+  artifacts_produced:
+    - ".qa/sessions/{feature}-session-notes.md"
+    - "exploratory-findings.txt"
+    - "bug-reports.xlsx"
+  scoring_rubric:
+    - criterion: "Bug Discovery Rate"
+      weight: 0.3
+      scale: "0-10: 0=no bugs found, 5=moderate defects, 10=many issues found"
+    - criterion: "Session Documentation"
+      weight: 0.25
+      scale: "0-10: 0=undocumented, 5=basic notes, 10=detailed scenarios with results"
+    - criterion: "Test Creativity"
+      weight: 0.25
+      scale: "0-10: 0=follows plan, 5=some creativity, 10=innovative test scenarios"
+    - criterion: "Bug Report Quality"
+      weight: 0.2
+      scale: "0-10: 0=vague, 5=reproducible, 10=detailed with reproduction steps"
+  anti_patterns:
+    - "Random clicking without intent or notes"
+    - "Duplicate bug reports"
+    - "Bugs reported without reproduction steps"
+    - "Focusing only on happy path"
+    - "Not testing across different environments"
+  test_hooks:
+    - "Verify session notes document 10+ distinct test scenarios"
+    - "Check bug reports have reproduction steps"
+    - "Confirm bugs span multiple feature areas"
+    - "Validate environmental coverage (browsers, devices, OS)"
+  exit_criteria:
+    - "Minimum 10 exploratory test sessions documented"
+    - "At least 5 unique defects found and reported"
+    - "All reported bugs have clear reproduction steps"
+    - "Session notes include duration, coverage areas, and findings"
+    - "Exploratory testing report summarizes key findings"
+
+- skill_id: SKILL_QA_AUTOMATION
+  role: ROLE_QA
+  description: "Develop automated test suites for regression testing and continuous integration"
+  prerequisites:
+    - "Test cases suitable for automation identified"
+    - "Automation framework and tools selected"
+    - "Test environment with API/UI access available"
+  evidence_required:
+    - "Automated test scripts written and functional"
+    - "Test data setup and teardown implemented"
+    - "Tests integrated with CI/CD pipeline"
+  artifacts_produced:
+    - ".qa/automation/{feature}-tests.{ext}"
+    - "test-execution-report.html"
+    - "automation-framework-config.yaml"
+  scoring_rubric:
+    - criterion: "Test Coverage"
+      weight: 0.3
+      scale: "0-10: 0=minimal, 5=basic happy path, 10=comprehensive paths"
+    - criterion: "Test Stability"
+      weight: 0.25
+      scale: "0-10: 0=flaky, 5=mostly stable, 10=zero flakiness"
+    - criterion: "Code Quality"
+      weight: 0.25
+      scale: "0-10: 0=unmaintainable, 5=readable, 10=well-abstracted with page objects"
+    - criterion: "Execution Speed"
+      weight: 0.2
+      scale: "0-10: 0=>10min, 5=2-5min, 10=<1min for full suite"
+  anti_patterns:
+    - "Automating tests that are too brittle"
+    - "Hard-coding data and selectors"
+    - "No wait/retry logic for async operations"
+    - "Skipping assertion and validation"
+    - "Tests dependent on execution order"
+  test_hooks:
+    - "Run full test suite and verify 100% pass rate"
+    - "Check code coverage of automated tests"
+    - "Measure test execution time"
+    - "Verify tests run independently"
+  exit_criteria:
+    - "Minimum 30 automated test cases written"
+    - "Test success rate >= 99% (zero flakiness)"
+    - "Tests execute in < 5 minutes total"
+    - "Tests use abstracted selectors and data"
+    - "CI/CD integration verified with daily runs"
+
+- skill_id: SKILL_QA_API_TESTING
+  role: ROLE_QA
+  description: "Test APIs comprehensively for functionality, performance, and security"
+  prerequisites:
+    - "API specification or Swagger/OpenAPI document available"
+    - "API test environment accessible"
+    - "Authentication credentials provided"
+  evidence_required:
+    - "API test cases written covering all endpoints"
+    - "Performance baseline and limits tested"
+    - "Security vulnerabilities tested (injection, auth, etc.)"
+  artifacts_produced:
+    - ".qa/api/{service}-api-tests.{ext}"
+    - "api-test-report.html"
+    - "api-performance-baseline.md"
+  scoring_rubric:
+    - criterion: "Endpoint Coverage"
+      weight: 0.25
+      scale: "0-10: 0=partial, 5=all endpoints, 10=all methods and status codes"
+    - criterion: "Test Depth"
+      weight: 0.25
+      scale: "0-10: 0=basic, 5=good coverage, 10=edge cases and error scenarios"
+    - criterion: "Security Testing"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=basic, 10=OWASP top 10 covered"
+    - criterion: "Performance Testing"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=basic load, 10=stress testing with SLA validation"
+  anti_patterns:
+    - "Testing only happy path"
+    - "No error code validation"
+    - "Ignoring response time requirements"
+    - "Missing authentication and authorization tests"
+    - "Hard-coded test data in requests"
+  test_hooks:
+    - "Verify all endpoints from spec are tested"
+    - "Check HTTP status codes validated"
+    - "Confirm error messages are validated"
+    - "Validate performance within SLA"
+  exit_criteria:
+    - "All API endpoints tested with 100% method coverage"
+    - "Minimum 3 error scenarios tested per endpoint"
+    - "Response time meets SLA for 95th percentile"
+    - "Authentication and authorization validated"
+    - "Security tests include injection, CORS, and token validation"
+
+- skill_id: SKILL_QA_PERFORMANCE_TESTING
+  role: ROLE_QA
+  description: "Test system performance under load and identify bottlenecks"
+  prerequisites:
+    - "Performance requirements and SLAs defined"
+    - "Load testing environment configured"
+    - "Test scenarios and user profiles documented"
+  evidence_required:
+    - "Load test scenarios executed"
+    - "Performance metrics collected and analyzed"
+    - "Bottleneck analysis report completed"
+  artifacts_produced:
+    - ".qa/performance/{feature}-load-test.{ext}"
+    - "performance-report.html"
+    - "bottleneck-analysis.md"
+  scoring_rubric:
+    - criterion: "Test Realism"
+      weight: 0.3
+      scale: "0-10: 0=unrealistic, 5=representative, 10=matches production profile"
+    - criterion: "Load Coverage"
+      weight: 0.25
+      scale: "0-10: 0=single scenario, 5=happy path, 10=multiple scenarios and ramp-up"
+    - criterion: "Metrics Completeness"
+      weight: 0.25
+      scale: "0-10: 0=few metrics, 5=basic metrics, 10=latency, throughput, resources"
+    - criterion: "Analysis Depth"
+      weight: 0.2
+      scale: "0-10: 0=raw data, 5=basic analysis, 10=root cause identification"
+  anti_patterns:
+    - "Test environment differs significantly from production"
+    - "No baseline performance for comparison"
+    - "Ignoring resource utilization (CPU, memory, I/O)"
+    - "Test duration too short to reach steady state"
+    - "Single user profile when multiple exist"
+  test_hooks:
+    - "Verify load test includes 2+ scenarios"
+    - "Check SLA metrics are validated"
+    - "Confirm database and cache utilization monitored"
+    - "Validate test results collected over 30+ minutes"
+  exit_criteria:
+    - "Load tests execute with minimum 100 concurrent users"
+    - "SLA targets verified (p95 latency < threshold)"
+    - "Metrics captured for CPU, memory, disk, and network"
+    - "Bottleneck analysis identifies root causes"
+    - "Improvement recommendations provided with estimated impact"
+
+- skill_id: SKILL_QA_SECURITY_TESTING
+  role: ROLE_QA
+  description: "Identify security vulnerabilities and validate security controls"
+  prerequisites:
+    - "Security requirements defined"
+    - "Threat model or attack surface documented"
+    - "Test environment accessible"
+  evidence_required:
+    - "Security test cases written"
+    - "Vulnerability scan results"
+    - "Security defects reported with risk ratings"
+  artifacts_produced:
+    - ".qa/security/{feature}-security-tests.md"
+    - "vulnerability-report.xlsx"
+    - "security-audit-findings.md"
+  scoring_rubric:
+    - criterion: "OWASP Coverage"
+      weight: 0.3
+      scale: "0-10: 0=no coverage, 5=top 5 tested, 10=top 10 tested"
+    - criterion: "Vulnerability Discovery"
+      weight: 0.25
+      scale: "0-10: 0=none found, 5=moderate findings, 10=comprehensive coverage"
+    - criterion: "Risk Assessment"
+      weight: 0.25
+      scale: "0-10: 0=no ratings, 5=basic severity, 10=CVSS scoring and impact"
+    - criterion: "Remediation Guidance"
+      weight: 0.2
+      scale: "0-10: 0=none, 5=basic guidance, 10=specific fix recommendations"
+  anti_patterns:
+    - "Missing authentication and authorization tests"
+    - "No input validation testing"
+    - "Ignoring data encryption requirements"
+    - "No session management testing"
+    - "Incomplete threat model coverage"
+  test_hooks:
+    - "Verify OWASP top 10 items checked"
+    - "Check for SQL injection vulnerabilities"
+    - "Confirm XSS prevention validated"
+    - "Validate CSRF protection tested"
+  exit_criteria:
+    - "OWASP top 10 vulnerabilities tested"
+    - "At least 5 security test cases documented"
+    - "All findings include risk rating and remediation"
+    - "No critical or high-risk vulnerabilities unaddressed"
+    - "Security testing report signed off by security team"
+
+- skill_id: SKILL_QA_CICD_PIPELINE
+  role: ROLE_QA
+  description: "Establish and maintain CI/CD pipelines with automated quality gates"
+  prerequisites:
+    - "Repository and build tools configured"
+    - "Test suites available and functional"
+    - "Deployment environments defined"
+  evidence_required:
+    - "CI/CD pipeline configuration files"
+    - "Quality gates defined and implemented"
+    - "Automated test execution on every commit"
+  artifacts_produced:
+    - "pipeline-config.yaml"
+    - "quality-gate-definitions.md"
+    - "deployment-report.xlsx"
+  scoring_rubric:
+    - criterion: "Pipeline Completeness"
+      weight: 0.3
+      scale: "0-10: 0=manual, 5=partial automation, 10=fully automated"
+    - criterion: "Quality Gate Rigor"
+      weight: 0.25
+      scale: "0-10: 0=none, 5=code coverage gate, 10=multiple gates with thresholds"
+    - criterion: "Feedback Speed"
+      weight: 0.25
+      scale: "0-10: 0=>1hr, 5=10-30min, 10=<5min feedback"
+    - criterion: "Reliability"
+      weight: 0.2
+      scale: "0-10: 0=frequent failures, 5=mostly stable, 10=reliable with <1% failure"
+  anti_patterns:
+    - "Skipping tests to speed up builds"
+    - "Quality gates that are too loose"
+    - "Slow feedback loops > 30 minutes"
+    - "Pipeline failures without clear error messages"
+    - "No artifact retention or traceability"
+  test_hooks:
+    - "Verify pipeline runs on every commit"
+    - "Check quality gates are enforced"
+    - "Confirm test results are visible"
+    - "Validate failure notifications sent"
+  exit_criteria:
+    - "Pipeline triggers automatically on code commits"
+    - "Unit, integration, and smoke tests run in pipeline"
+    - "Code coverage gate enforced (minimum 80%)"
+    - "Linting and security scan pass before deployment"
+    - "Deployment to staging automated with approval for production"
+
+- skill_id: SKILL_QA_TEST_DATA_MANAGEMENT
+  role: ROLE_QA
+  description: "Design and manage test data strategies for comprehensive testing"
+  prerequisites:
+    - "Data requirements and schema understood"
+    - "Test environment database accessible"
+    - "Data privacy and compliance requirements known"
+  evidence_required:
+    - "Test data setup scripts created"
+    - "Data generation strategy documented"
+    - "Test data cleanup procedures established"
+  artifacts_produced:
+    - ".qa/data/{entity}-test-data.sql"
+    - "test-data-setup-guide.md"
+    - "data-management-config.yaml"
+  scoring_rubric:
+    - criterion: "Coverage Completeness"
+      weight: 0.3
+      scale: "0-10: 0=minimal, 5=good variety, 10=comprehensive edge cases"
+    - criterion: "Realism"
+      weight: 0.25
+      scale: "0-10: 0=dummy data, 5=realistic, 10=production-like distribution"
+    - criterion: "Maintainability"
+      weight: 0.25
+      scale: "0-10: 0=hardcoded, 5=scripted, 10=parameterized generators"
+    - criterion: "Data Privacy"
+      weight: 0.2
+      scale: "0-10: 0=using production data, 5=PII masked, 10=synthetic with compliance"
+  anti_patterns:
+    - "Using production data in test environments"
+    - "Hard-coded test data in test cases"
+    - "Incomplete data setup leading to test failures"
+    - "No test data cleanup causing test interdependencies"
+    - "Ignoring data privacy and compliance requirements"
+  test_hooks:
+    - "Verify test data setup is repeatable"
+    - "Check for sensitive data masking"
+    - "Confirm cleanup scripts restore clean state"
+    - "Validate data distribution matches requirements"
+  exit_criteria:
+    - "Test data setup scripts fully automated"
+    - "Minimum 5 data scenarios covering edge cases"
+    - "No production data in test environments"
+    - "Data cleanup procedures documented and tested"
+    - "Test data strategy reviewed and approved by privacy officer"
+
+- skill_id: SKILL_QA_DEFECT_MANAGEMENT
+  role: ROLE_QA
+  description: "Manage defect lifecycle including reporting, tracking, and verification"
+  prerequisites:
+    - "Bug tracking system configured"
+    - "Defect classification scheme defined"
+    - "Triage and prioritization process established"
+  evidence_required:
+    - "Defect reports with clear reproduction steps"
+    - "Defect triage completed with priority and severity"
+    - "Defect closure verification completed"
+  artifacts_produced:
+    - "defect-report.md"
+    - "triage-summary.xlsx"
+    - "verification-checklist.txt"
+  scoring_rubric:
+    - criterion: "Report Quality"
+      weight: 0.3
+      scale: "0-10: 0=vague, 5=reproducible, 10=detailed with data and logs"
+    - criterion: "Triage Accuracy"
+      weight: 0.25
+      scale: "0-10: 0=inaccurate, 5=reasonable, 10=expert assessment"
+    - criterion: "Verification Thoroughness"
+      weight: 0.25
+      scale: "0-10: 0=not verified, 5=basic check, 10=comprehensive verification"
+    - criterion: "Timeliness"
+      weight: 0.2
+      scale: "0-10: 0=delayed, 5=reasonable, 10=same-day triage and closure"
+  anti_patterns:
+    - "Bug reports without reproduction steps"
+    - "Duplicate or invalid defects not closed"
+    - "Defects marked closed without verification"
+    - "No severity or priority assessment"
+    - "Missing environment and version information"
+  test_hooks:
+    - "Verify each defect has unique ID and status"
+    - "Check reproduction steps are clear and complete"
+    - "Confirm triage includes severity and priority"
+    - "Validate closed defects verified fixed"
+  exit_criteria:
+    - "Minimum 20 defects reported with complete information"
+    - "All defects triaged with severity and priority"
+    - "Defect closure rate > 90%"
+    - "Defect verification completed before closure"
+    - "Defect summary report provided to stakeholders"

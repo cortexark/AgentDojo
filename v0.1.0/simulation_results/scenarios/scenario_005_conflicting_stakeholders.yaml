@@ -1,0 +1,151 @@
+scenario_id: scenario_005
+name: "Conflicting Stakeholder Requirements"
+description: "Tests orchestrator's ability to handle competing demands from different stakeholders and make principled trade-off decisions"
+
+injected_failures:
+  - failure_id: f016_pm_scope_vs_sde_feasibility
+    type: conflict
+    description: "PM wants all features in current sprint; SDE says 3-month timeline needed"
+    conflict_parties: ["PM", "SDE"]
+    severity: critical
+    escalation_required: true
+    effort_to_remediate: 40
+
+  - failure_id: f017_ux_quality_vs_pm_speed
+    type: conflict
+    description: "UX wants comprehensive user testing; PM wants launch in 2 weeks"
+    conflict_parties: ["UX", "PM"]
+    severity: high
+    escalation_required: true
+    effort_to_remediate: 30
+
+  - failure_id: f018_security_vs_performance
+    type: conflict
+    description: "Security requirements add 25% performance overhead; PE says unacceptable"
+    conflict_parties: ["SDE", "PE"]
+    severity: high
+    escalation_required: true
+    effort_to_remediate: 60
+
+  - failure_id: f019_feature_completeness_vs_cost
+    type: conflict
+    description: "Full feature set exceeds budget allocation; finance pressures scope reduction"
+    conflict_parties: ["PM", "Finance"]
+    severity: high
+    escalation_required: true
+    effort_to_remediate: 50
+
+  - failure_id: f020_legacy_support_vs_modernization
+    type: conflict
+    description: "SDE wants to modernize architecture; customer support wants to minimize breaking changes"
+    conflict_parties: ["SDE", "Customer Success"]
+    severity: medium
+    escalation_required: true
+    effort_to_remediate: 80
+
+affected_phases:
+  - Planning
+  - Design
+  - Build
+
+expected_outcomes:
+  - "Conflicts should be identified early in Planning phase"
+  - "Challenge system should be triggered when conflicting positions emerge"
+  - "Both sides should present evidence-based positions"
+  - "Escalation ladder should enforce structured decision-making"
+  - "Human decision-makers should be involved in resolution"
+  - "Decision rationale should be documented"
+  - "Trade-off analysis should inform final decisions"
+  - "All stakeholders should acknowledge resolution"
+
+failure_tags:
+  - "[FAIL:stakeholder_management:critical]"
+  - "[FAIL:decision_making:high]"
+  - "[FAIL:planning:high]"
+  - "[FAIL:scope:high]"
+
+kpi_impact:
+  stakeholder_satisfaction:
+    baseline: 4.2
+    expected_impact: 2.8
+    measurement: "Average stakeholder satisfaction score"
+
+  decision_quality:
+    baseline: 0.85
+    expected_impact: 0.45
+    measurement: "Percentage of decisions without reversal/rework"
+
+  planning_time:
+    baseline: 40
+    expected_impact: 120
+    measurement: "Hours spent on conflict resolution"
+
+  team_morale:
+    baseline: 4.0
+    expected_impact: 2.5
+    measurement: "Team engagement and satisfaction score"
+
+  project_schedule_impact:
+    baseline: 0.0
+    expected_impact: 10.0
+    measurement: "Days of delay due to conflict resolution"
+
+  team_alignment:
+    baseline: 0.90
+    expected_impact: 0.50
+    measurement: "Percentage of team agreement on direction"
+
+bug_taxonomy_category: "coordination_deadlock"
+
+validation_checks:
+  - check_id: vc024
+    name: "Conflict Detection"
+    phase: Planning
+    condition: "stakeholder_conflicts_identified"
+    expected_result: true
+
+  - check_id: vc025
+    name: "Evidence Gathering"
+    phase: Planning
+    condition: "both_sides_present_evidence"
+    expected_result: true
+
+  - check_id: vc026
+    name: "Challenge System Engaged"
+    phase: Planning
+    condition: "formal_challenge_raised"
+    expected_result: true
+
+  - check_id: vc027
+    name: "Escalation to Leadership"
+    phase: Planning
+    condition: "human_escalation_triggered"
+    expected_result: true
+
+  - check_id: vc028
+    name: "Decision Documented"
+    phase: Planning
+    condition: "decision_rationale_recorded"
+    expected_result: true
+
+  - check_id: vc029
+    name: "Stakeholder Acknowledgment"
+    phase: Planning
+    condition: "all_parties_acknowledge_decision"
+    expected_result: true
+
+  - check_id: vc030
+    name: "Phase Transition Approved"
+    phase: Design
+    condition: "transition_approved_despite_conflicts"
+    expected_result: true
+
+metrics_to_track:
+  - conflict_count
+  - conflict_resolution_time
+  - escalation_frequency
+  - decision_reversals
+  - stakeholder_satisfaction_by_role
+  - team_morale_trends
+  - rework_due_to_conflicting_requirements
+  - unresolved_conflicts_at_phase_boundary
