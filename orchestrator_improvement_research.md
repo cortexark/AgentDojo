@@ -164,3 +164,55 @@
 **What improved:** Skill dependency validation catches ordering errors before execution. Event bus enables lifecycle observability. MAST coverage jumped from 6/14 to 10/14. DSPy-style prompts standardize role interactions.
 **What regressed:** Nothing
 **Lessons:** Protocol extraction pattern (HealthDataProviding → WatchConnectivityProviding) continues to be the highest-leverage testability improvement. Event bus schema should be validated against actual skill emissions in next cycle. depends_on/produces fields need runtime enforcement, not just schema presence.
+
+## [v0.4.0] — 2026-03-10
+
+**Git commit:** (see Phase 5 commit)
+
+**What was researched this cycle:**
+- CrewAI 2025-2026: `output_pydantic` schema validation, `guardrail` callable, `kickoff_for_each` batch processing
+- LangGraph 0.3+: Compile-time state schema validation, `MemorySaver` checkpoint replay, conditional edge routing
+- AutoGen 0.4+: Composable termination conditions, nested chats for scoped conversations
+- MetaGPT 0.8+: `cause_by` message routing for event chain tracing, JSON schema validation for intermediate artifacts
+- DSPy 2.5+: `dspy.Assert` (hard) and `dspy.Suggest` (soft) inline assertions, typed predictors, metric-driven optimization
+- 10 research papers, 10 backlog papers
+
+**What was implemented (and why):**
+- PATTERN_035 (Pydantic-Style Schema Validation): [BUG-005 FIX] Replaced naive string matching with `StructuredOutcomeValidator` validating `expected_detections` schema against skill catalog. artifact_correctness: 0.95 → 1.00.
+- PATTERN_036 (Assert/Suggest Exit Criteria Predicates): [BUG-006 FIX] Created `exit_criteria_validator.py` with 18 measurable regex patterns and 7 vague word patterns. 64.10% pass rate identifies 14 genuinely vague criteria.
+- PATTERN_037 (cause_by Event Chain Tracing): Added `caused_by_event_id` to event emissions in orchestration graph for root-cause audit trails.
+- PATTERN_038 (Composable Termination Conditions): Gate conditions in `dependency_checker.py` modeled as composable predicates.
+- PATTERN_040 (Guardrail Callable): `EXIT_CRITERIA_VALIDATION` state runs validator after BUILD, blocks TEST entry if pass rate < 90%.
+- PATTERN_041 (Reward Hacking Detection): SIM_010 — skill games coverage with trivial XCTAssertTrue(true) tests. QA detects assertion density = 0.
+- PATTERN_042 (Verification Gaming Detection): SIM_011 — design doc passes word-count but lacks trade-off analysis. PE detects structural gap.
+- PATTERN_043 (BM25 Keyword Search): `memory_search.py` with BM25 (k1=1.5, b=0.75) over JSONL. Pure Python, zero deps.
+- PATTERN_044 (Runtime Dependency DAG Validation): `dependency_checker.py` builds dependency graph, topological sort, cycle detection. All 39 skills validated, 0 circular dependencies.
+
+**What was NOT implemented (and why):**
+- PATTERN_039 (Checkpoint-Based Scenario Replay): End-to-end simulation fast enough for 11 scenarios; defer until > 20 scenarios
+- PATTERN_045 (Reflexion Memory): Already tracking via kpi_results.json; formal reflection adds value after 5+ cycles
+- PATTERN_046 (Nested Conversation for Challenge Resolution): Challenge lifecycle defined but volume doesn't justify runtime enforcement
+- LLM-as-Judge quality scoring: Susceptible to reward hacking; deterministic assertions preferred
+- CrewAI Episodic Recall Memory: Already rejected in v0.3.0 (PATTERN_027); JSONL sufficient
+- DSPy MIPROv2 Optimization: Insufficient historical data; revisit after 10+ cycles
+
+**Bugs found and triaged:**
+- 14 skills with vague exit criteria: Filed to KNOWN-BUGS as P2 (exit_criteria_validator detected)
+- 4 of 20 MAST modes uncovered: Filed to KNOWN-BUGS as P2 (hallucination, infinite_loop, context_loss, tool_misuse)
+- Event chain tracing not runtime-validated: Filed to KNOWN-BUGS as P3
+
+**KPI results:**
+- overall_weighted_score: 0.96 → 0.97 (delta: +0.01)
+- artifact_correctness: 0.95 → 1.00 (delta: +0.05)
+- defect_detection_rate: 1.00 → 1.00 (delta: 0.00)
+- defect_escape_rate: 0.00 → 0.00 (delta: 0.00)
+- skill_completion_rate: 0.98 → 1.00 (delta: +0.02)
+- orchestration_reliability: 1.00 → 1.00 (delta: 0.00)
+- mast_failure_coverage: 0.71 → 0.80 (delta: +0.09)
+- event_bus_coverage: 0.00 → 1.00 (delta: +1.00)
+- test_coverage: 1.00 → 1.00 (delta: 0.00)
+
+**Verdict:** PROMOTED
+**What improved:** Simulation harness now uses structured outcome validation (BUG-005 fix). Exit criteria validator surfaces vague criteria (BUG-006 fix). MAST expanded to 16/20 with reward_hacking and verification_gaming scenarios. BM25 memory search replaces filter-only queries. Dependency checker validates skill DAG at init.
+**What regressed:** Nothing
+**Lessons:** Exit criteria validator reveals a systemic issue — 36% of criteria are too vague. This is a valuable diagnostic tool that should drive criteria improvement in v0.5.0. The MAST taxonomy should be treated as extensible (20 modes, not fixed at 14). KPI formula bugs (values > 1.0) must be caught in Phase 4 — add a KPI range assertion in the harness.

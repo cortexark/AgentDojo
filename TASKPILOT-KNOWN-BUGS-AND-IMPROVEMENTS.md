@@ -2,40 +2,48 @@
 
 ## Active Items
 
-### [BUG] BUG-005 — Simulation harness naive string matching
+### [IMPROVEMENT] 14 skills have vague exit criteria (64% pass rate)
+**Severity:** P2
+**What happened:** Exit criteria validator (v0.4.0) detected 14 of 39 skills with criteria lacking measurable assertion verbs. Examples: "P95 latency within SLO threshold" (no specific threshold), "Breaking changes called out explicitly" (no artifact verification).
+**Expected behavior:** All exit criteria should pass the exit_criteria_validator with measurable patterns.
+**Suggested fix:** Rewrite failing criteria to include explicit thresholds, artifact names, or binary predicates. Target: >= 90% pass rate.
+**Found in phase:** PHASE 4 (TEST — v0.4.0 exit criteria validation)
+
+### [IMPROVEMENT] 4 of 20 MAST failure modes uncovered by simulations
+**Severity:** P2
+**What happened:** FailureMode enum defines 20 modes. 16 are exercised by SIM_001-SIM_011. Missing: hallucination, infinite_loop, context_loss, tool_misuse (the original MAST canonical modes that no scenario exercises).
+**Expected behavior:** All 20 defined failure modes should have at least one scenario.
+**Suggested fix:** Add SIM_012 (hallucination) and SIM_013 (tool_misuse) in v0.5.0.
+**Found in phase:** PHASE 4 (TEST — v0.4.0 MAST coverage = 0.80 = 16/20)
+
+### [IMPROVEMENT] Event chain tracing not yet validated at runtime
 **Severity:** P3
-**What happened:** The `_is_failure_detected()` function in the simulation harness uses naive string matching ("should detect" in expected_outcomes) to validate whether a seeded failure was correctly identified. This approach misses structured failure classifications and cannot distinguish between partial and complete detections.
-**Expected behavior:** Failure detection should validate outcome objects against the MAST failure taxonomy, with structured assertions for failure mode, severity, and remediation path.
-**Suggested fix:** Refactor _is_failure_detected() to use outcome object validation against FailureMode enum and outcome schema.
-**Found in phase:** PHASE 8 (DOCUMENT — v0.3.0 research)
+**What happened:** `caused_by_event_id` field added to event emissions (PATTERN_037), but no runtime enforcement validates that the field is populated correctly.
+**Expected behavior:** Every gate_blocked event should have a caused_by_event_id linking to the triggering failure event.
+**Suggested fix:** Add validation in simulation harness or event bus to verify cause chains.
+**Found in phase:** PHASE 3 (BUILD — v0.4.0 orchestration graph)
 
-### [BUG] BUG-006 — No binary exit criteria validation
-**Severity:** P3
-**What happened:** Some skill exit criteria remain vague ("reviewed by X", "meets quality bar") instead of measurable, binary pass/fail assertions. The skill registration process accepts these without validation.
-**Expected behavior:** All skill exit criteria should be strictly measurable and binary. Ambiguous criteria should be rejected at registration time.
-**Suggested fix:** Add ExitCriteria validator that enforces binary, measurable format. Reject vague criteria with helpful error messages.
-**Found in phase:** PHASE 8 (DOCUMENT — v0.3.0 research)
+## Resolved Items (v0.4.0 — 2026-03-10)
 
-### [IMPROVEMENT] 3 skills still have minor exit criteria gaps
-**Severity:** P2
-**What happened:** SKILL_PE_BATTERY_PROFILING needs watchOS-specific profiling criteria. SKILL_UX_COMPLICATION_DESIGN needs complication family-specific criteria. prompts/ folder is empty (no prompt templates created yet).
-**Expected behavior:** All skills should have complete, binary, verifiable exit criteria.
-**Suggested fix:** Add platform-specific exit criteria for PE and UX skills. Create initial prompt templates.
-**Found in phase:** PHASE 4 (TEST — v0.2.0 KPI: skill_completion_rate at 0.93)
+### [RESOLVED] BUG-005 — Simulation harness naive string matching
+**Original severity:** P3
+**Resolution:** Replaced `_is_failure_detected()` with `StructuredOutcomeValidator` class using `FailureMode` enum (20 modes), `DetectionVerdict` enum, and `DetectionAssertion` dataclass. Validation now checks detector role + skill against skill catalog exit criteria instead of substring matching. All 11 scenarios pass with structured validation.
+**Resolved in:** v0.4.0, PHASE 3
 
-### [IMPROVEMENT] Memory system is query-by-filter only — no semantic search
-**Severity:** P2
-**What happened:** JSONL event store supports temporal filtering and sorting but not semantic similarity search. Research duplication detection requires exact-match queries.
-**Expected behavior:** Memory should support fuzzy/semantic queries for research deduplication.
-**Suggested fix:** Consider lightweight TF-IDF or embedding-based search for v0.3.0.
-**Found in phase:** PHASE 3 (BUILD — v0.2.0 memory schema design)
+### [RESOLVED] BUG-006 — No binary exit criteria validation
+**Original severity:** P3
+**Resolution:** Created `exit_criteria_validator.py` with 18 measurable patterns (regex) and 7 vague word patterns. Validator scans all skills/*.yaml and reports pass rate. Current pass rate: 64.10% (25/39 valid). Validator works correctly — failing criteria are genuinely vague and flagged for improvement.
+**Resolved in:** v0.4.0, PHASE 3
 
-### [IMPROVEMENT] 6 of 14 MAST failure modes not yet in simulations
-**Severity:** P2
-**What happened:** Covering 8 of 14 modes. Remaining: prompt_injection, role_impersonation, resource_exhaustion, cascading_failure, privacy_violation, model_drift.
-**Expected behavior:** Full coverage of relevant MAST failure modes.
-**Suggested fix:** Add 2 more per cycle. Next: privacy_violation and cascading_failure.
-**Found in phase:** PHASE 2 (RESEARCH — v0.2.0)
+### [RESOLVED] Memory system is query-by-filter only — no semantic search
+**Original severity:** P2
+**Resolution:** Created `memory_search.py` with BM25 keyword search (k1=1.5, b=0.75) over JSONL event logs. Pure Python, zero dependencies. Searches over `rationale`, `notes`, `finding`, `description` fields.
+**Resolved in:** v0.4.0, PHASE 3
+
+### [RESOLVED] 6 of 14 MAST failure modes not yet in simulations
+**Original severity:** P2
+**Resolution:** MAST coverage expanded from 10/14 to 16/20 (expanded taxonomy). Added SIM_010 (reward_hacking) and SIM_011 (verification_gaming). Extended FailureMode enum to 20 modes.
+**Resolved in:** v0.4.0, PHASE 3
 
 ## Resolved Items (v0.2.0 — 2026-03-10)
 
